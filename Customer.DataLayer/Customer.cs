@@ -16,7 +16,7 @@ namespace Customer.DataLayer
         }*/
 
         public int CustomerID { set; get; }
-        public int ProvinceID { set; get; }
+        //public int ProvinceID { set; get; }
         public string FirstName { set; get; }
         public string LastName { set; get; }
 

@@ -10,7 +10,6 @@ namespace Customer.DataLayer
     {
         protected override void Seed(CustomerContext context)
         {
-            
             var cities = new List<City>
             {
                 new City {CityID = 1, CityName = "Hamedan"},

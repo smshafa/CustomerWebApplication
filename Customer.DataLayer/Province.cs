@@ -17,6 +17,7 @@ namespace Customer.DataLayer
         // one side for city
         public virtual ICollection<City> Cities { set; get; }
 
+        //https://www.entityframeworktutorial.net/code-first/configure-one-to-many-relationship-in-code-first.aspx
 
     }
 }

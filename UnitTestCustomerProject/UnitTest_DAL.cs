@@ -11,13 +11,9 @@ namespace UnitTestCustomerProject
         [TestMethod]
         public void TestEF()
         {
-
             //Arrange
             CustomerContext customerContext = new CustomerContext();
-
-
             //Act
-            
             int count = customerContext.Provinces.Count();
             //Assert
             Assert.AreEqual(count, 2);

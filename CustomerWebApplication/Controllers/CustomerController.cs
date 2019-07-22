@@ -28,11 +28,11 @@ namespace CustomerWebApplication.Controllers
                         opt => opt.MapFrom(src => src.LastName)
                     )
                     .ForMember(d => d.ProvinceName,
-                        opt => opt.MapFrom(src => src.Province.ProvinceName)
+                        opt => opt.MapFrom(src => src.City.Province.ProvinceName)
                     )
                     .ForMember(d => d.CityName,
-                        opt => opt.MapFrom(src => src.Province.City.CityName)
-                    );
+                        opt => opt.MapFrom(src => src.City.CityName)
+                );
             });
 
             Mapper.AssertConfigurationIsValid();

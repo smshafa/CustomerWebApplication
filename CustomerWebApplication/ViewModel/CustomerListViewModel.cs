@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using CustomerWebApplication.Models;
 
-namespace Customer.ServiceLayer.ViewModel
+namespace CustomerWebApplication.ViewModels
 {
-    public class CustomerViewModel
+    public class CustomerListViewModel
     {
         public List<CustomerModel> CustomersList { set; get; }
         public List<ProvinceModel> ProvincesList { get; set; }

@@ -13,7 +13,7 @@ namespace Customer.DataLayer
         public int ProvinceID { set; get; }
         public string ProvinceName { set; get; }
 
-        public virtual ICollection<City> Cities { set; get; }
+        public virtual City City { set; get; }
 
     }
 }

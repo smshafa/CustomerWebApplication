@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using Microsoft.Owin.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using Owin;
 
 namespace UnitTestCustomerProject
@@ -67,7 +68,11 @@ namespace UnitTestCustomerProject
             Task<HttpResponseMessage> response = CallApi();
             if (response.Result.IsSuccessStatusCode)
             {
-                Assert.AreEqual("value", response.Result.Content);
+                HttpContent requestContent = response.Result.Content;
+                string jsonContent = requestContent.ReadAsStringAsync().Result;
+                //CONTACT contact = JsonConvert.DeserializeObject<CONTACT>(jsonContent);
+
+                Assert.AreEqual("\"value\"", jsonContent);
                 //customer product = await response.Content.ReadAsStringAsync().Result > Product > ();
                 //Console.WriteLine("{0}\t${1}\t{2}", product.Name, product.Price, product.Category);
             }

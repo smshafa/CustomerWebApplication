@@ -21,6 +21,8 @@ namespace Customer.DataLayer
         public string FirstName { set; get; }
         public string LastName { set; get; }
 
+        public int CityID { set; get; }
+
         // one side
         public virtual City City { set; get; }
     }

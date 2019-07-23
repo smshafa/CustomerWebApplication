@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CustomerWebApplication.Models;
+using Customer.ServiceLayer.Models;
 
-namespace CustomerWebApplication.ViewModels
+namespace Customer.ServiceLayer.ViewModels
 {
     public class CustomerListViewModel
     {

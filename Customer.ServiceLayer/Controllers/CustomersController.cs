@@ -8,8 +8,7 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using AutoMapper;
 using Customer.BusinessLayer;
-using CustomerWebApplication.Models;
-using CustomerWebApplication.ViewModel;
+using Customer.ServiceLayer.ViewModels;
 
 namespace Customer.ServiceLayer.Controllers
 {

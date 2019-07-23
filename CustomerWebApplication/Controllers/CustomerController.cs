@@ -6,7 +6,7 @@ using System.Web.Configuration;
 using System.Web.Mvc;
 using AutoMapper;
 using Customer.BusinessLayer;
-using CustomerWebApplication.ViewModel;
+using Customer.ServiceLayer.ViewModels;
 
 namespace CustomerWebApplication.Controllers
 {

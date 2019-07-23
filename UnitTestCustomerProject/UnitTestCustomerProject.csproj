@@ -97,6 +97,10 @@
       <Project>{216f2239-261e-41ed-881c-006c545cdd9c}</Project>
       <Name>Customer.DataLayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Customer.ServiceLayer\Customer.ServiceLayer.csproj">
+      <Project>{C147365C-85C9-4127-9C84-0A5EA6DE5A2C}</Project>
+      <Name>Customer.ServiceLayer</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CustomerWebApplication\Customer.WebLayer.csproj">
       <Project>{8EFE63A3-1E07-4172-9756-1EE22491BB61}</Project>
       <Name>Customer.WebLayer</Name>

@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
 
-namespace CustomerWebApplication.Models
+namespace Customer.ServiceLayer.Models
 {
     public class CityModel
     {

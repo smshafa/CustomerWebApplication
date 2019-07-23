@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace CustomerWebApplication.Models
+namespace Customer.ServiceLayer.Models
 {
     public class ProvinceModel
     {

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Customer.BusinessLayer;
-using CustomerWebApplication.ViewModel;
+using Customer.ServiceLayer.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTestCustomerProject

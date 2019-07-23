@@ -170,7 +170,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\CityModel.cs" />
+    <Compile Include="Models\CustomerModel.cs" />
+    <Compile Include="Models\ProvinceModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\CustomerListViewModel.cs" />
+    <Compile Include="ViewModels\CustomerViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Areas\HelpPage\HelpPage.css" />
@@ -225,7 +230,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -264,10 +268,6 @@
     <ProjectReference Include="..\Customer.DataLayer\Customer.DataLayer.csproj">
       <Project>{216f2239-261e-41ed-881c-006c545cdd9c}</Project>
       <Name>Customer.DataLayer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CustomerWebApplication\Customer.WebLayer.csproj">
-      <Project>{8efe63a3-1e07-4172-9756-1ee22491bb61}</Project>
-      <Name>Customer.WebLayer</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

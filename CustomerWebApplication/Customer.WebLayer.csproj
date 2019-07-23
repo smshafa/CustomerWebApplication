@@ -177,6 +177,8 @@
     <Content Include="Views\Customer\TestView.cshtml" />
     <Content Include="Views\NewCustomer\CusForm.cshtml" />
     <Content Include="Views\Hamid\Index.cshtml" />
+    <Content Include="Views\Shared\EfitorTemplates\Province.cshtml" />
+    <Content Include="Views\Hamid\CusForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

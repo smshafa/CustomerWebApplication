@@ -12,6 +12,7 @@ using Customer.ServiceLayer.ViewModels;
 
 namespace Customer.ServiceLayer.Controllers
 {
+
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class CustomersController : ApiController
     {
@@ -21,26 +22,8 @@ namespace Customer.ServiceLayer.Controllers
             CustomerUnitOfWork unitOfWork = new CustomerUnitOfWork();
             IEnumerable<Customer.DataLayer.Customer> customers = unitOfWork.GetRepoInstance<Customer.DataLayer.Customer>().GetAll();
 
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<Customer.DataLayer.Customer, CustomerViewModel>()
-                    .ForMember(d => d.FirstName,
-                        opt => opt.MapFrom(src => src.FirstName)
-                    )
-                    .ForMember(d => d.LastName,
-                        opt => opt.MapFrom(src => src.LastName)
-                    )
-                    .ForMember(d => d.ProvinceName,
-                        opt => opt.MapFrom(src => src.City.Province.ProvinceName)
-                    )
-                    .ForMember(d => d.CityName,
-                        opt => opt.MapFrom(src => src.City.CityName)
-                    );
-            });
+            IEnumerable<CustomerViewModel> customerViewModel = new List<CustomerViewModel>();
 
-            Mapper.AssertConfigurationIsValid();
-
-            // Act
             var result = Mapper.Map<IEnumerable<Customer.DataLayer.Customer>, IEnumerable<CustomerViewModel>>(customers);
 
             return result;

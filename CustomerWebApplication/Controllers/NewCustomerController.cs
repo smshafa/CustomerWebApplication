@@ -50,6 +50,7 @@ namespace CustomerWebApplication.Controllers
             if (ModelState.IsValid == true)
             {
                 string name = customerViewModel.FirstName;
+                string porvince = customerViewModel.ProvinceName;
             }
 
             return View();

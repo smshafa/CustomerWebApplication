@@ -13,9 +13,10 @@ namespace Customer.ServiceLayer.ViewModels
         [Display(Name = "نام")]
         public string FirstName { set; get; }
 
-        [Required(ErrorMessage = "خالی نمی‌تواند باشد.")]
+        //[Required(ErrorMessage = "خالی نمی‌تواند باشد.")]
         [MaxLength(40, ErrorMessage = "حداکثر 40 حرف")]
         [Display(Name = "نام خانوادگی")]
+        [IsText] // ********** A custom validation for client and server validation
         public string LastName { set; get; }
 
         [Display(Name = "نام استان")]

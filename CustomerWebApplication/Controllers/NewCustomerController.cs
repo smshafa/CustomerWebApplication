@@ -53,6 +53,8 @@ namespace CustomerWebApplication.Controllers
                 string porvince = customerViewModel.ProvinceName;
             }
 
+            // very important when we want to be in view after post.
+            ViewBag.CityList = ToSelectList();
             return View();
         }
 

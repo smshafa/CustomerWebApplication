@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Customer.ServiceLayer.ViewModels.CustomerViewModel>
+﻿@using CustomerWebApplication.Controllers
+@model IEnumerable<Customer.ServiceLayer.ViewModels.CustomerViewModel>
 
 @{
     ViewBag.Title = "View";
@@ -8,7 +9,10 @@
 <h2>View</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New Customer", "CusForm", "NewCustomer")
+</p>
+<p>
+    @Html.ActionLink("Hamid", "Index", "Hamid")
 </p>
 <table class="table">
     <tr>

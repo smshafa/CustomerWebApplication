@@ -23,6 +23,22 @@ namespace UnitTestCustomerProject
             AutoMapperConfiguration.Configure();
         }
 
+
+        // use this post method from browser to test post method:
+        //$.ajax(
+        //{
+        //    url: 'https://localhost:44311/api/customers',
+        //    type: 'POST',
+        //    contentType: 'application/json',
+        //    data: JSON.stringify({
+        //        "FirstName": "haha",
+        //        "LastName": "ddd",
+        //        "ProvinceName": "Hamedan",
+        //        "CityName": "Hamedan"
+        //    })
+        //})
+
+
         [TestMethod]
         public void Insert()
         {

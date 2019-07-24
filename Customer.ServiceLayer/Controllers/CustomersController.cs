@@ -45,6 +45,7 @@ namespace Customer.ServiceLayer.Controllers
             return result;
         }
 
+        //
         // POST api/values
         public HttpResponseMessage Post([FromBody]CustomerViewModel customer)
         {
@@ -74,9 +75,10 @@ namespace Customer.ServiceLayer.Controllers
             repCustomer.Insert(entityCustomer);
             repCustomer.Save();
 
+            
             // Response to caller
-            var response = Request.CreateResponse<DataLayer.Customer>(System.Net.HttpStatusCode.Created, entityCustomer);
-
+            //var response = Request.CreateResponse<DataLayer.Customer>(System.Net.HttpStatusCode.Created, entityCustomer);
+            var response = Request.CreateResponse(HttpStatusCode.Created);
             return response;
         }
 

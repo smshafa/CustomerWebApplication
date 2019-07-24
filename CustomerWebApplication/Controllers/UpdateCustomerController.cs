@@ -1,8 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using AutoMapper;
 using Customer.BusinessLayer;
 using Customer.ServiceLayer.ViewModels;
@@ -27,11 +34,61 @@ namespace CustomerWebApplication.Controllers
             ViewBag.ProvinceList = ToSelectListProvince();
             //ViewBag.CityList = ToSelectListCity();
             result.CityList = GetCityList();
-
+            result.CustomerID = ID;
+            TempData["CusID"] = ID;
             return View(result);
         }
 
+        [HttpPost]
+        public ActionResult CusForm(CustomerViewModel customerViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                //redirect
+            }
 
+            int customerID = Convert.ToInt32(TempData["CusID"]);
+
+            Task<HttpResponseMessage> response = default;
+
+            HttpClient client = new HttpClient();
+
+            try
+            {
+                client.BaseAddress = new Uri("https://localhost:44311/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(
+                    new MediaTypeWithQualityHeaderValue("application/json"));
+
+
+                //StringContent content = new StringContent(JsonConvert.SerializeObject(customer), Encoding.UTF8, "application/json");
+                var json = new JavaScriptSerializer().Serialize(customerViewModel);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+
+                //var data = new StringContent(JsonConvert.SerializeObject(customer));
+                response = client.PutAsync($"api/customers/{customerID}", content);
+                response.Wait();
+                if (response.Result.StatusCode == HttpStatusCode.OK)
+                {
+                    Console.WriteLine("updated");
+                }
+                else
+                {
+                    Console.WriteLine("was not updated");
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+
+            customerViewModel.CityList = GetCityList();
+            ViewBag.ProvinceList = ToSelectListProvince();
+            //ViewBag.CityList = ToSelectListCity();
+            
+            return View(customerViewModel);
+        }
         [NonAction]
         public SelectList ToSelectListProvince()
         {
@@ -40,7 +97,7 @@ namespace CustomerWebApplication.Controllers
             CustomerUnitOfWork unitOfWork = new CustomerUnitOfWork();
             var provinces = unitOfWork.GetRepoInstance<Customer.DataLayer.Province>().GetAll();
             var q = from c in provinces
-                select new { c.ProvinceID, c.ProvinceName };
+                select new {c.ProvinceID, c.ProvinceName};
 
             foreach (var p in q)
             {
@@ -63,7 +120,7 @@ namespace CustomerWebApplication.Controllers
             CustomerUnitOfWork unitOfWork = new CustomerUnitOfWork();
             var cities = unitOfWork.GetRepoInstance<Customer.DataLayer.City>().GetAll();
             var q = from c in cities
-                select new { c.CityID, c.CityName };
+                select new {c.CityID, c.CityName};
 
             foreach (var p in q)
             {
@@ -93,6 +150,8 @@ namespace CustomerWebApplication.Controllers
             return new SelectList(cityList, "Value", "Text");
             //return (bldg);
         }
+
+        
     }
 }
 

@@ -42,5 +42,11 @@ namespace CustomerWebApplication.Controllers
 
             return View(result);
         }
+
+        public ActionResult Create()
+        {
+
+            return View();
+        }
     }
 }

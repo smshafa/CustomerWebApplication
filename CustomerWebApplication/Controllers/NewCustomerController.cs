@@ -16,14 +16,15 @@ namespace CustomerWebApplication.Controllers
         public ActionResult CusForm()
         {
 
-            ViewBag.CityList = ToSelectList();
+            ViewBag.ProvinceList = ToSelectListProvince();
+            ViewBag.CityList = ToSelectListCity();
             return View();
         }
 
 
         //https://www.c-sharpcorner.com/article/dropdownlist-in-asp-net-mvc/
         [NonAction]
-        public SelectList ToSelectList()
+        public SelectList ToSelectListProvince()
         {
             List<SelectListItem> list = new List<SelectListItem>();
 
@@ -37,7 +38,31 @@ namespace CustomerWebApplication.Controllers
                 list.Add(new SelectListItem()
                 {
                     Text = p.ProvinceName,
-                    Value = p.ProvinceID.ToString()
+                    //Value = p.ProvinceID.ToString()
+                    Value = p.ProvinceName
+                });
+            }
+
+            return new SelectList(list, "Value", "Text");
+        }
+
+        [NonAction]
+        public SelectList ToSelectListCity()
+        {
+            List<SelectListItem> list = new List<SelectListItem>();
+
+            CustomerUnitOfWork unitOfWork = new CustomerUnitOfWork();
+            var cities = unitOfWork.GetRepoInstance<Customer.DataLayer.City>().GetAll();
+            var q = from c in cities
+                    select new { c.CityID, c.CityName };
+
+            foreach (var p in q)
+            {
+                list.Add(new SelectListItem()
+                {
+                    Text = p.CityName,
+                    Value = p.CityName
+                    //Value = p.CityID.ToString()
                 });
             }
 
@@ -51,10 +76,12 @@ namespace CustomerWebApplication.Controllers
             {
                 string name = customerViewModel.FirstName;
                 string porvince = customerViewModel.ProvinceName;
+                string city = customerViewModel.CityName;
             }
 
             // very important when we want to be in view after post.
-            ViewBag.CityList = ToSelectList();
+            ViewBag.ProvinceList = ToSelectListProvince();
+            ViewBag.CityList = ToSelectListCity();
             return View();
         }
 

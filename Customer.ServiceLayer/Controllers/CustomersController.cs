@@ -81,13 +81,58 @@ namespace Customer.ServiceLayer.Controllers
         }
 
         // PUT api/values/5
-        public void Put(int id, [FromBody]string value)
+        public HttpResponseMessage Put(int id, [FromBody]CustomerViewModel customer)
         {
+            if (id < 1 || customer == null)
+                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
+
+            // Creating an unit of word cause to use one dbcontext.
+            CustomerUnitOfWork unitOfWork = new CustomerUnitOfWork();
+
+            // Get customer
+            Customer.DataLayer.Customer customerSingle
+                = unitOfWork.GetRepoInstance<DataLayer.Customer>().GetAll().Where(c => c.CustomerID == id).Single();
+
+            // Find city and province entity
+            City city = unitOfWork.GetRepoInstance<City>().GetAll().Where(s => s.CityName == customer.CityName).Single();
+            Province province = unitOfWork.GetRepoInstance<Province>().GetAll().Where(s => s.ProvinceName == customer.ProvinceName).Single();
+            city.Province = province;
+
+
+            customerSingle.FirstName = customer.FirstName;
+            customerSingle.LastName = customer.LastName;
+            customerSingle.City = city;
+
+            
+            // Get a repository of customer to do CRUD.
+            GenericRepository<DataLayer.Customer> repCustomer =
+                unitOfWork.GetRepoInstance<Customer.DataLayer.Customer>();
+
+
+            // Inserting new customer data
+            repCustomer.Update(customerSingle);
+            repCustomer.Save();
+
+            // Response to caller
+            return Request.CreateResponse(System.Net.HttpStatusCode.OK);
         }
 
         // DELETE api/values/5
-        public void Delete(int id)
+        public HttpResponseMessage Delete(int id)
         {
+            if(id < 1)
+                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
+
+            // Creating an unit of word cause to use one dbcontext.
+            CustomerUnitOfWork unitOfWork = new CustomerUnitOfWork();
+
+
+            Customer.DataLayer.Customer customer = unitOfWork.GetRepoInstance<DataLayer.Customer>().GetAll().Where(c => c.CustomerID == id).Single();
+            unitOfWork.GetRepoInstance<DataLayer.Customer>().Delete(customer);
+            unitOfWork.SaveChanges();
+
+            // Response to caller
+            return Request.CreateResponse(System.Net.HttpStatusCode.OK);
         }
     }
 }

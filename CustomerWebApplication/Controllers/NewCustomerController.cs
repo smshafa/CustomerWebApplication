@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Script.Serialization;
 using Customer.BusinessLayer;
 using Customer.ServiceLayer.ViewModels;
 
@@ -53,7 +58,22 @@ namespace CustomerWebApplication.Controllers
                 string porvince = customerViewModel.ProvinceName;
             }
 
+            HttpClient client = new HttpClient();
 
+
+            client.BaseAddress = new Uri("https://localhost:44311/");
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+
+
+            
+            var json = new JavaScriptSerializer().Serialize(customerViewModel);
+            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = client.PostAsync("api/customers", content).Result;
+
+            if (response.StatusCode == HttpStatusCode.Created)
+                Console.WriteLine("inserted");
 
             // very important when we want to be in view after post.
             ViewBag.CityList = ToSelectList();

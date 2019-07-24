@@ -15,6 +15,7 @@ using Newtonsoft.Json;
 using Owin;
 using System.Net.Http.Formatting;
 using System.Web.Http.Results;
+using System.Web.Script.Serialization;
 
 namespace UnitTestCustomerProject
 {
@@ -105,14 +106,23 @@ namespace UnitTestCustomerProject
             try
             {
                 client.BaseAddress = new Uri("https://localhost:44311/");
+                client.DefaultRequestHeaders.Accept.Clear();
                 client.DefaultRequestHeaders.Accept.Add(
                     new MediaTypeWithQualityHeaderValue("application/json"));
-                
 
-                StringContent content = new StringContent(JsonConvert.SerializeObject(customer), Encoding.UTF8, "application/json");
+                //client.DefaultRequestHeaders.Accept.Add(
+                //    new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
+
+
+                //StringContent content = new StringContent(JsonConvert.SerializeObject(customer), Encoding.UTF8, "application/json");
+                var json = new JavaScriptSerializer().Serialize(customer);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+
                 //var data = new StringContent(JsonConvert.SerializeObject(customer));
 
-                response = client.PostAsJsonAsync("api/customers", content);
+                //response = client.PostAsJsonAsync("api/customers", customer);
+                response = client.PostAsync("api/customers", content);
             }
             catch (Exception ex)
             {
@@ -134,6 +144,10 @@ namespace UnitTestCustomerProject
                 Assert.Fail();
 
 
+            //500 Error comes from the code and there must be something going wrong in the application,
+            //which is causing this, can you try if any other web api method is working,
+            //if that then this method is faulty, if not then you might have some issue in application itself.
+            //Alternatively you can try Application_Error event and see what is going wrong.
         }
     }
 }

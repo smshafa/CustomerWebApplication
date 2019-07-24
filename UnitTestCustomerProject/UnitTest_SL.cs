@@ -149,6 +149,97 @@ namespace UnitTestCustomerProject
             //if that then this method is faulty, if not then you might have some issue in application itself.
             //Alternatively you can try Application_Error event and see what is going wrong.
         }
+
+
+
+        //https
+        public Task<HttpResponseMessage> CallPutApi()
+        {
+            // Arrange
+            CustomerViewModel customer = new CustomerViewModel
+            {
+                FirstName = "nameTestUpdateAPI",
+                LastName = "familyTestUpdateAPI",
+                CityName = "Tehran",
+                ProvinceName = "Tehran"
+            };
+
+            int customerID = 13;
+
+            Task<HttpResponseMessage> response = default;
+
+            HttpClient client = new HttpClient();
+
+            try
+            {
+                client.BaseAddress = new Uri("https://localhost:44311/");
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(
+                    new MediaTypeWithQualityHeaderValue("application/json"));
+
+
+                //StringContent content = new StringContent(JsonConvert.SerializeObject(customer), Encoding.UTF8, "application/json");
+                var json = new JavaScriptSerializer().Serialize(customer);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+
+                //var data = new StringContent(JsonConvert.SerializeObject(customer));
+                response = client.PutAsync($"api/customers/{customerID}", content);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+
+
+            //response.Wait();
+            return response;
+        }
+
+        [TestMethod]
+        public void TestPutApi()
+        {
+            Task<HttpResponseMessage> response = CallPutApi();
+            response.Wait();
+
+            if (response.Result.StatusCode != HttpStatusCode.OK)
+                Assert.Fail();
+
+
+            //500 Error comes from the code and there must be something going wrong in the application,
+            //which is causing this, can you try if any other web api method is working,
+            //if that then this method is faulty, if not then you might have some issue in application itself.
+            //Alternatively you can try Application_Error event and see what is going wrong.
+        }
+
+        public Task<HttpResponseMessage> CallDeleteApi()
+        {
+            // Arrange
+            Task<HttpResponseMessage> response = default;
+            int customerID = 1021;
+
+            HttpClient client = new HttpClient();
+
+            client.BaseAddress = new Uri("https://localhost:44311/");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            // New code:
+            response = client.DeleteAsync($"api/customers/{customerID}");
+
+            return response;
+        }
+
+        [TestMethod]
+        public void TestDeleteApi()
+        {
+            Task<HttpResponseMessage> response = CallDeleteApi();
+            response.Wait();
+
+            if (response.Result.StatusCode != HttpStatusCode.OK)
+                Assert.Fail();
+        }
+
     }
 }
 

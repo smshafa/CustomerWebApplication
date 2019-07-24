@@ -74,6 +74,7 @@ namespace Customer.ServiceLayer.Controllers
             repCustomer.Insert(entityCustomer);
             repCustomer.Save();
 
+            
             // Response to caller
             var response = Request.CreateResponse<DataLayer.Customer>(System.Net.HttpStatusCode.Created, entityCustomer);
 

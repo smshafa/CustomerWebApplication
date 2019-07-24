@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Customer.ServiceLayer.ViewModels;
 //using Microsoft.Owin.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Owin;
+using System.Net.Http.Formatting;
+using System.Web.Http.Results;
 
 namespace UnitTestCustomerProject
 {
@@ -35,8 +40,8 @@ namespace UnitTestCustomerProject
     [TestClass]
     public class UnitTest_SL
     {
-        
-        public Task<HttpResponseMessage> CallApi()
+
+        public Task<HttpResponseMessage> CallGetIDApi()
         {
             // Arrange
             Task<HttpResponseMessage> response;
@@ -57,15 +62,15 @@ namespace UnitTestCustomerProject
                 response.Wait();
             }
 
-            
+
             //}
             return response;
         }
 
         [TestMethod]
-        public void TestApi()
+        public void TestGetApi()
         {
-            Task<HttpResponseMessage> response = CallApi();
+            Task<HttpResponseMessage> response = CallGetIDApi();
             if (response.Result.IsSuccessStatusCode)
             {
                 HttpContent requestContent = response.Result.Content;
@@ -77,5 +82,59 @@ namespace UnitTestCustomerProject
                 //Console.WriteLine("{0}\t${1}\t{2}", product.Name, product.Price, product.Category);
             }
         }
+
+
+
+        //https
+        public Task<HttpResponseMessage> CallPostApi()
+        {
+            // Arrange
+            CustomerViewModel customer = new CustomerViewModel
+            {
+                FirstName = "nameTestAPI",
+                LastName = "familyTestAPI",
+                CityName = "Hamedan",
+                ProvinceName = "Hamedan"
+            };
+
+
+            Task<HttpResponseMessage> response = default;
+
+            HttpClient client = new HttpClient();
+
+            try
+            {
+                client.BaseAddress = new Uri("https://localhost:44311/");
+                client.DefaultRequestHeaders.Accept.Add(
+                    new MediaTypeWithQualityHeaderValue("application/json"));
+                
+
+                StringContent content = new StringContent(JsonConvert.SerializeObject(customer), Encoding.UTF8, "application/json");
+                //var data = new StringContent(JsonConvert.SerializeObject(customer));
+
+                response = client.PostAsJsonAsync("api/customers", content);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+
+
+            //response.Wait();
+            return response;
+        }
+
+        [TestMethod]
+        public void TestPostApi()
+        {
+            Task<HttpResponseMessage> response = CallPostApi();
+            response.Wait();
+            
+            if (response.Result.StatusCode != HttpStatusCode.Created)
+                Assert.Fail();
+
+
+        }
     }
 }
+

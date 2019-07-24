@@ -134,6 +134,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NewCusController.cs" />
     <Compile Include="Controllers\NewCustomerController.cs" />
+    <Compile Include="Controllers\UpdateCustomerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -181,6 +182,7 @@
     <Content Include="Views\NewCustomer\CusForm.cshtml" />
     <Content Include="Views\Hamid\CusForm.cshtml" />
     <Content Include="Views\Hamid\Index.cshtml" />
+    <Content Include="Views\UpdateCustomer\CusForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

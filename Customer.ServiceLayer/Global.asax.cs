@@ -6,6 +6,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using Customer.ServiceLayer.App_Start;
 
 namespace Customer.ServiceLayer
 {
@@ -13,6 +14,9 @@ namespace Customer.ServiceLayer
     {
         protected void Application_Start()
         {
+            // AutoMapper Configuration
+            AutoMapperConfiguration.Configure();
+
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

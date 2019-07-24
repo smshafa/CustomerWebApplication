@@ -13,7 +13,8 @@ namespace Customer.DataLayer
         public int CityID { set; get; }
         public string CityName { set; get; }
 
-   
+        public int ProvinceID { set; get; }
+        
         // many side for province side
         //it is not compulsory, I put it to initiate in CustomerInitializer
         public virtual Province Province { get; set; }

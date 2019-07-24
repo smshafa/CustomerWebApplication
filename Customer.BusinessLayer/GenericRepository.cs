@@ -36,6 +36,11 @@ namespace Customer.BusinessLayer
             return _dbSet.Find(id);
         }
 
+        public int Count()
+        {
+            return _dbSet.Count();
+        }
+
         public void Insert(TEntity entity)
         {
             _dbSet.Add(entity);

@@ -5,6 +5,10 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using AutoMapper;
+using Customer.ServiceLayer;
+using Customer.ServiceLayer.App_Start;
+using Customer.ServiceLayer.ViewModels;
 
 namespace CustomerWebApplication
 {
@@ -12,6 +16,9 @@ namespace CustomerWebApplication
     {
         protected void Application_Start()
         {
+            // AutoMapper Configuration
+            AutoMapperConfiguration.Configure();
+
             AreaRegistration.RegisterAllAreas();
 
             HtmlHelper.ClientValidationEnabled = true;

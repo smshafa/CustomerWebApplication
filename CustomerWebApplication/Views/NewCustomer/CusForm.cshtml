@@ -1,0 +1,136 @@
+﻿@using Customer.DataLayer
+@using Customer.ServiceLayer.Models
+@using Customer.ServiceLayer.ViewModels
+@model global::Customer.ServiceLayer.ViewModels.CustomerViewModel
+
+@{
+    ViewBag.Title = "NewCustomer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>NewCustomer</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>CustomerViewModel</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.ProvinceName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ProvinceName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ProvinceName, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProvinceName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.ProvinceName, ViewBag.CityList as SelectList, new { @class = "form-control", @onChange = "SelectedValue(this)" })
+                @Html.ValidationMessageFor(model => model.ProvinceName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CityName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CityName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CityName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" data-val-customemail="The field Prime Number is invalid." />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+<script src="@Url.Content("~/Scripts/jquery-3.3.1.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+
+
+//http://ezzylearning.com/tutorial/creating-custom-validation-attribute-in-asp-net-mvc
+//https://patrickdesjardins.com/blog/asp-net-mvc-custom-data-annotation
+//https://www.devtrends.co.uk/blog/the-complete-guide-to-validation-in-asp.net-mvc-3-part-2
+<script type="text/javascript">
+    (function ($) {
+        //alert("test");
+
+        $.validator.addMethod('customemail',
+            function (value, element) {
+                var regex = /^[a-z][a-z\s]*$/;
+                //alert(value);
+                return regex.test($(element).val());
+            });
+        $.validator.unobtrusive.adapters.add('customemail',
+            [],
+            function (options) {
+                options.messages['customemail'] = options.message;
+                options.rules['customemail'] = options.params;
+            });
+    }(jQuery));
+
+    //jQuery.validator.addMethod("letterswithspace", function(value, element) {
+    //    return this.optional(element) || /^[a-z][a-z\s]*$/i.test(value);
+    //}, "letters only");
+
+    //Explanation
+
+    //    ^[a-z] means start with one letter
+    //    [a-z\s]*$ means after accept zero or more letters or spaces
+
+
+</script>
+
+
+
+<script>
+
+    //To get selected value an text of dropdownlist
+    function SelectedValue(ddlObject) {
+        //Selected value of dropdownlist
+        var selectedValue = ddlObject.value;
+        //Selected text of dropdownlist
+        var selectedText = ddlObject.options[ddlObject.selectedIndex].innerHTML;
+
+        //alert popup with detail of seleceted value and text
+        alert(" Selected Value: " + selectedValue + " -- " + "Selected Text: " + selectedText);
+    }
+</script>
+
+
+@*Apply changes downloaded through fetch using the merge command.
+Merge takes the commits retrieved from fetch and tries to add them to your local branch. 
+The merge will keep the commit history of your local changes so that when you share your branch with push Git will know how others should merge your changes.*@

@@ -1,0 +1,11 @@
+﻿@using Customer.ServiceLayer.ViewModels
+@model Customer.ServiceLayer.ViewModels.CustomerViewModel
+
+<select id="Province" name="Province">
+    @foreach (CustomerViewModel.Province value in Enum.GetValues(typeof(CustomerViewModel.Province)))
+    {
+        <option value="@value" @(Model == value ? "selected=\"selected\"" : "")>
+            @value
+        </option>
+    }
+</select>

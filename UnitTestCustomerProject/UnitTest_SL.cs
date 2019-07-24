@@ -52,16 +52,16 @@ namespace UnitTestCustomerProject
             //using (WebApp.Start<Startup>(url: baseAddress))
             //{
 
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("https://localhost:44311/");
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            HttpClient client = new HttpClient();
 
-                // New code:
-                response = client.GetAsync("api/customers/1");
-                response.Wait();
-            }
+            client.BaseAddress = new Uri("https://localhost:44311/");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            // New code:
+            response = client.GetAsync("api/customers/1");
+            response.Wait();
+
 
 
             //}
@@ -72,13 +72,16 @@ namespace UnitTestCustomerProject
         public void TestGetApi()
         {
             Task<HttpResponseMessage> response = CallGetIDApi();
+            response.Wait();
             if (response.Result.IsSuccessStatusCode)
             {
                 HttpContent requestContent = response.Result.Content;
                 string jsonContent = requestContent.ReadAsStringAsync().Result;
                 //CONTACT contact = JsonConvert.DeserializeObject<CONTACT>(jsonContent);
 
-                Assert.AreEqual("\"value\"", jsonContent);
+                Assert.AreEqual(
+                    "{\"CustomerID\":1,\"FirstName\":\"reza\",\"LastName\":\"shafaei\",\"ProvinceName\":\"Hamedan\",\"CityName\":\"Hamedan\",\"CityList\":null}",
+                    jsonContent);
                 //customer product = await response.Content.ReadAsStringAsync().Result > Product > ();
                 //Console.WriteLine("{0}\t${1}\t{2}", product.Name, product.Price, product.Category);
             }
@@ -158,8 +161,8 @@ namespace UnitTestCustomerProject
             // Arrange
             CustomerViewModel customer = new CustomerViewModel
             {
-                FirstName = "nameTestUpdateAPI",
-                LastName = "familyTestUpdateAPI",
+                FirstName = "nameTestUpdateAPI2",
+                LastName = "familyTestUpdateAPI2",
                 CityName = "Tehran",
                 ProvinceName = "Tehran"
             };
@@ -216,7 +219,7 @@ namespace UnitTestCustomerProject
         {
             // Arrange
             Task<HttpResponseMessage> response = default;
-            int customerID = 1021;
+            int customerID = 1024;
 
             HttpClient client = new HttpClient();
 

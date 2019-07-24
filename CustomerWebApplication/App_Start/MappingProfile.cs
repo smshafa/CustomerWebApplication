@@ -45,7 +45,11 @@ namespace CustomerWebApplication.App_Start
                 )
                 .ForMember(d => d.CityName,
                     opt => opt.MapFrom(src => src.City.CityName)
-                );
+                )
+                .ForMember(d => d.CityList,
+                    opt => opt.Ignore()
+                    ).ReverseMap();
+                
         }
     }
 }

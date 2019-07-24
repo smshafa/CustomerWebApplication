@@ -25,7 +25,8 @@ namespace CustomerWebApplication.Controllers
             CustomerViewModel result = Mapper.Map<Customer.DataLayer.Customer, CustomerViewModel>(customers);
 
             ViewBag.ProvinceList = ToSelectListProvince();
-            ViewBag.CityList = ToSelectListCity();
+            //ViewBag.CityList = ToSelectListCity();
+            result.CityList = GetCityList();
 
             return View(result);
         }
@@ -75,6 +76,22 @@ namespace CustomerWebApplication.Controllers
             }
 
             return new SelectList(list, "Value", "Text");
+        }
+
+        // Populate Building values to DropDownList
+        private IEnumerable<SelectListItem> GetCityList()
+        {
+            CustomerUnitOfWork unitOfWork = new CustomerUnitOfWork();
+            var cities = unitOfWork.GetRepoInstance<Customer.DataLayer.City>().GetAll();
+
+            var cityList = cities.Select(c => new SelectListItem
+            {
+                Value = c.CityName,
+                Text = c.CityName
+            });
+
+            return new SelectList(cityList, "Value", "Text");
+            //return (bldg);
         }
     }
 }

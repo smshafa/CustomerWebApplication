@@ -40,7 +40,10 @@ namespace Customer.ServiceLayer.App_Start
                 )
                 .ForMember(d => d.CityName,
                     opt => opt.MapFrom(src => src.City.CityName)
-                ).ReverseMap();
+                )
+                .ForMember(d=>d.CityList,
+                    opt=>opt.Ignore())
+                .ReverseMap();
 
             //We can map both directions with ReverseMap() method, including unflattening:
 

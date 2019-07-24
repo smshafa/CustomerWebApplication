@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Customer.ServiceLayer.ViewModels
 {
@@ -24,6 +25,9 @@ namespace Customer.ServiceLayer.ViewModels
 
         [Display(Name = "نام شهر")]
         public string CityName { set; get; }
+        // for DropDownList ****
+        public IEnumerable<SelectListItem> CityList { get; set; }
+
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

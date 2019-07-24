@@ -9,6 +9,9 @@ namespace Customer.ServiceLayer.ViewModels
 {
     public class CustomerViewModel : IValidatableObject
     {
+        [ScaffoldColumn(false)]
+        public int CustomerID { set; get; }
+
         [Required(ErrorMessage = "خالی نمی‌تواند باشد.")]
         [MaxLength(40, ErrorMessage = "حداکثر 40 حرف")]
         [Display(Name = "نام")]

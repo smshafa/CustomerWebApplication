@@ -47,7 +47,7 @@
             @Html.DisplayFor(modelItem => item.CityName)
         </td>
         <td>
-            @Html.ActionLink("Edit", "CusForm","UpdateCustomer" ,new { id=item.FirstName}) |
+            @Html.ActionLink("Edit", "CusForm/" + item.CustomerID,"UpdateCustomer") |
             @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
             @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
         </td>

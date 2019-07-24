@@ -47,7 +47,9 @@ namespace CustomerWebApplication.App_Start
                     opt => opt.MapFrom(src => src.City.CityName)
                 )
                 .ForMember(d => d.CityList,
-                    opt => opt.Ignore()
+                    opt => opt.Ignore()).ReverseMap()   // Accer is added this code. this extra list for dropDownList
+                .ForMember(d => d.CustomerID,
+                            opt => opt.Ignore()         // Accer is added this code. this extra list for gridView
                     ).ReverseMap();
                 
         }

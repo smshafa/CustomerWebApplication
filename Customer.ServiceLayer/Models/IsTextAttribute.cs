@@ -10,6 +10,8 @@ namespace Customer.ServiceLayer.ViewModels
 {
     public class IsTextAttribute : ValidationAttribute, IClientValidatable
     {
+        private const string VALIDATION_TYPE = "customemail";
+        private const string EMAIL_REGEX = @"put your regex here";
 
         public IsTextAttribute()
         {
@@ -30,7 +32,13 @@ namespace Customer.ServiceLayer.ViewModels
                 new ModelClientValidationRule
                 {
                     ValidationType = "required",
-                    ErrorMessage = "لطفا از حروف استفاده کنید."
+                    ErrorMessage = "خالی نباشد"
+                }
+                ,
+                new ModelClientValidationRule
+                {
+                    ValidationType = VALIDATION_TYPE,
+                    ErrorMessage = ":)"
                 }
 
             };

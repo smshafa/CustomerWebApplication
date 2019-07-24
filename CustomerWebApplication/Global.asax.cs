@@ -14,8 +14,8 @@ namespace CustomerWebApplication
         {
             AreaRegistration.RegisterAllAreas();
 
-            //HtmlHelper.ClientValidationEnabled = true;
-            //HtmlHelper.UnobtrusiveJavaScriptEnabled = false;
+            HtmlHelper.ClientValidationEnabled = true;
+            HtmlHelper.UnobtrusiveJavaScriptEnabled = true;
 
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

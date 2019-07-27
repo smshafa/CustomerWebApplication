@@ -1,16 +1,21 @@
 # CustomerWebApplication
 Tadkar's project
 
+Database is created by EFCodeFirst(EntityFramework).
 
-if you face some problems with refrences, please do the below operation:
+
+*****************************
+Error:
+if you face some problems with refrences, please do the below operations:
 1- Delete all of ...\CustomerWebApplication\packages folders
 2- In nuGet manager setting Clear nuGet Chaches.
 3- In solution right click and press Clean solution.
 4- In solution right click and press Restore NuGet packeages.
 5- In solution right click and press Build Solution.
 
-
+*********************************
 Error:
+if you face the below error, please follow the instruction:
 Could not find a part of the path 'F:\Projects\Repository\CustomerWebApplication\CustomerWebApplication\bin\roslyn\csc.exe'.
 
 In my case the solution was to re-install/upgrade Nuget packages:
@@ -22,7 +27,7 @@ Then I looked into .csproj and made sure that the paths to packages are correct 
 
 Short answer - run this in the Package Manager Console:
 
-Update-Package Microsoft.CodeDom.Providers.DotNetCompilerPlatform -r
+++++=======:)>   Update-Package Microsoft.CodeDom.Providers.DotNetCompilerPlatform -r
 
 
 **************************

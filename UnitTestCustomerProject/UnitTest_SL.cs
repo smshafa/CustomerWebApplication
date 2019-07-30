@@ -42,6 +42,41 @@ namespace UnitTestCustomerProject
     public class UnitTest_SL
     {
 
+
+        // use this post method from browser to test post method:
+        //$.ajax(
+        //{
+        //    url: 'https://localhost:44311/api/customers',
+        //    type: 'POST',
+        //    contentType: 'application/json',
+        //    data: JSON.stringify({
+        //        "FirstName": "haha",
+        //        "LastName": "ddd",
+        //        "ProvinceName": "Hamedan",
+        //        "CityName": "Hamedan"
+        //    })
+        //})
+
+
+        // Put/ Update
+        //$.ajax(
+        //{
+        //    url: 'https://localhost:44311/api/customers/14',
+        //    type: 'PUT',
+        //    contentType: 'application/json',
+        //    data: JSON.stringify(
+
+        //    {
+        //        "FirstName": "update",
+        //        "LastName": "update",
+        //        "ProvinceName": "Hamedan",
+        //        "CityName": "Hamedan"
+
+        //    }
+        //    )
+        //})
+
+
         public Task<HttpResponseMessage> CallGetIDApi()
         {
             // Arrange

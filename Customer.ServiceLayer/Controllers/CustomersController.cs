@@ -23,7 +23,7 @@ namespace Customer.ServiceLayer.Controllers
             CustomerUnitOfWork unitOfWork = new CustomerUnitOfWork();
             IEnumerable<Customer.DataLayer.Customer> customers = unitOfWork.GetRepoInstance<Customer.DataLayer.Customer>().GetAll();
 
-            IEnumerable<CustomerViewModel> customerViewModel = new List<CustomerViewModel>();
+            //IEnumerable<CustomerViewModel> customerViewModel = new List<CustomerViewModel>();
 
             var result = Mapper.Map<IEnumerable<Customer.DataLayer.Customer>, IEnumerable<CustomerViewModel>>(customers);
 
@@ -38,7 +38,7 @@ namespace Customer.ServiceLayer.Controllers
             Customer.DataLayer.Customer customers =
                 unitOfWork.GetRepoInstance<DataLayer.Customer>().GetById(id);
 
-            IEnumerable<CustomerViewModel> customerViewModel = new List<CustomerViewModel>();
+            //IEnumerable<CustomerViewModel> customerViewModel = new List<CustomerViewModel>();
 
             var result = Mapper.Map<Customer.DataLayer.Customer, CustomerViewModel>(customers);
 

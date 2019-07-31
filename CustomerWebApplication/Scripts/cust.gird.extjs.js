@@ -161,6 +161,36 @@ Ext.onReady(function () {
         //autoLoad: true
     });
 
+    Ext.define('ProvinceModel', {
+        extend: 'Ext.data.Model',
+        fields: [{
+                name: 'ProvinceID',
+                type: 'int'
+            }, {
+                name: 'ProvinceName',
+                type: 'string'
+            },
+
+        ]
+    });
+
+    var province = Ext.create('Ext.data.Store', {
+        //url: '/CustomerExtJS/City',
+        //root: 'data',
+        //fields: ['CityID', 'CityName'],
+        model: 'ProvinceModel',
+        //data:
+        proxy: {
+            type: 'ajax',
+            url: '/CustomerExtJS/Province',
+            reader: {
+                type: 'json',
+                rootProperty: 'data'
+            }
+        },
+        autoLoad: true
+    });
+
     var grid = Ext.create('Ext.grid.Panel', {
         renderTo: document.body,
         plugins: {
@@ -249,13 +279,27 @@ Ext.onReady(function () {
                 //}
             }
         }, {
-            text: 'Province',
-            width: 120,
-            sortable: true,
+            header: 'Province',
             dataIndex: 'ProvinceName',
-            field: {
-                xtype: 'textfield'
+            editor: {
+                xtype: 'combobox',
+                store: province, // It is a function
+                displayField: 'ProvinceName',
+                valueField: 'ProvinceName',
+                typeAhead: true,
+                mode: 'remote',
+                //forceSelection: true,
+                //triggerAction: 'all'
+
             }
+        //}, {
+        //    text: 'Province',
+        //    width: 120,
+        //    sortable: true,
+        //    dataIndex: 'ProvinceName',
+        //    field: {
+        //        xtype: 'textfield'
+        //    }
         }],
         dockedItems: [{
             xtype: 'toolbar',

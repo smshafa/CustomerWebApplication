@@ -108,6 +108,10 @@ namespace CustomerWebApplication.Controllers
             });
         }
 
+        /// <summary>
+        /// Fill City Combo-Box
+        /// </summary>
+        /// <returns></returns>
         //https://jorgeramon.me/2009/extjs-with-asp-net-mvc-sample/
         public JsonResult City()
         {
@@ -144,13 +148,46 @@ namespace CustomerWebApplication.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        /// Fill Province Combo-Box
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult Province()
+        {
+
+            CustomerUnitOfWork unitOfWork = new CustomerUnitOfWork();
+
+
+            List<Province> provinces = new List<Province>();
+            provinces.AddRange(unitOfWork.GetRepoInstance<Customer.DataLayer.Province>().GetAll());
+
+            var provincesEnumerable =
+                from c in provinces
+                select new { c.ProvinceID, c.ProvinceName };
+
+
+
+
+            return Json(new
+            {
+                //total = 2,
+                data = provincesEnumerable,
+                success = true,
+                message = "Loaded citiprovinceses data"
+            }, JsonRequestBehavior.AllowGet);
+        }
+
 
     }
-
     class city
     {
-        public int CityID { set; get;}
+        public int CityID { set; get; }
         public string CityName { set; get; }
 
     }
 }
+
+    
+
+    
+

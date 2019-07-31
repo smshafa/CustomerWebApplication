@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using Customer.ServiceLayer.ViewModels;
+using Newtonsoft.Json;
 
 namespace CustomerWebApplication.Controllers
 {
@@ -36,6 +37,7 @@ namespace CustomerWebApplication.Controllers
 
             return response;
         }
+        
 
         public JsonResult Load(int? start, int? limit)
         {
@@ -43,30 +45,24 @@ namespace CustomerWebApplication.Controllers
             Task<HttpResponseMessage> response = CallGetIDApi();
             response.Wait();
 
-            int count = 0;
-            JsonResult jsonResult = null;
+
             string jsonContent = default;
+
+            List<CustomerViewModel> customerViewModel = null;
             if (response.Result.IsSuccessStatusCode)
             {
                 HttpContent requestContent = response.Result.Content;
                 jsonContent = requestContent.ReadAsStringAsync().Result;
-                count = 30;
-                jsonResult = Json(jsonContent);
-
-                //return jsonResult;
-            }
+                
+                customerViewModel = JsonConvert.DeserializeObject<List<CustomerViewModel>>(jsonContent);               
+            }           
 
             return Json(new
             {
-                total = count,
-                data = jsonContent
-            }, JsonRequestBehavior.AllowGet);
-
-            //return Json(new
-            //{
-            //    total = 4,
-            //    data = contact,
-            //}, JsonRequestBehavior.AllowGet);
+                data = customerViewModel,
+                success = true,
+                message = "Loaded data"
+            }, JsonRequestBehavior.AllowGet);           
         }
 
         [HttpPost]

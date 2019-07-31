@@ -116,7 +116,91 @@ Ext.onReady(function () {
             }
         }
     });
-    
+
+    // The data store containing the list of states
+    // static mode
+    //var city = Ext.create('Ext.data.Store', {
+    //    fields: ['abbr', 'name'],
+    //    data: [
+    //        { "abbr": "AL", "name": "Alabama" },
+    //        { "abbr": "AK", "name": "Alaska" },
+    //        { "abbr": "AZ", "name": "Arizona" }
+    //        //...
+    //    ]
+    //});
+
+    // Set up a Ext.data.Model to use in our Store
+    //Ext.define('CityModel', {
+    //    extend: 'Ext.data.Model',
+    //    fields: ['CityID', 'CityName']
+    //    //fields: [
+    //    //    { name: 'firstName', type: 'string' },
+    //    //    { name: 'lastName', type: 'string' },
+    //    //    { name: 'age', type: 'int' },
+    //    //    { name: 'eyeColor', type: 'string' }
+    //    //]
+    //});
+
+    Ext.define('CityModel', {
+        extend: 'Ext.data.Model',
+        fields: [{
+            name: 'CityID',
+            type: 'int'
+        }, {
+            name: 'CityName',
+            type: 'string'
+        },
+
+        ]
+    });
+
+    var city = Ext.create('Ext.data.Store', {
+        //url: '/CustomerExtJS/City',
+        //root: 'data',
+        //fields: ['CityID', 'CityName'],
+        model: 'CityModel',
+        //data:
+        proxy: {
+            type: 'ajax',
+            url: '/CustomerExtJS/City',
+            reader: {
+                type: 'json',
+                rootProperty: 'data'
+            }
+        },
+        //autoLoad: true
+    });
+
+    Ext.define('ProvinceModel', {
+        extend: 'Ext.data.Model',
+        fields: [{
+            name: 'ProvinceID',
+            type: 'int'
+        }, {
+            name: 'ProvinceName',
+            type: 'string'
+        },
+
+        ]
+    });
+
+    var province = Ext.create('Ext.data.Store', {
+        //url: '/CustomerExtJS/City',
+        //root: 'data',
+        //fields: ['CityID', 'CityName'],
+        model: 'ProvinceModel',
+        //data:
+        proxy: {
+            type: 'ajax',
+            url: '/CustomerExtJS/Province',
+            reader: {
+                type: 'json',
+                rootProperty: 'data'
+            }
+        },
+        autoLoad: true
+    });
+
     //myGrid.store.reload();
     //myGrid.getView().refresh();
 
@@ -180,22 +264,71 @@ Ext.onReady(function () {
             field: {
                 xtype: 'textfield'
             }
-        }, {
-            text: 'City',
-            width: 120,
-            sortable: true,
-            dataIndex: 'CityName',
-            field: {
-                xtype: 'textfield'
-            }
-        }, {
-            text: 'Province',
-            width: 120,
-            sortable: true,
-            dataIndex: 'ProvinceName',
-            field: {
-                xtype: 'textfield'
-            }
+                //}, {
+                //    text: 'City',
+                //    width: 120,
+                //    sortable: true,
+                //    dataIndex: 'CityName',
+                //    field: {
+                //        xtype: 'textfield'
+                //    }
+            }, {
+                header: 'City',
+                dataIndex: 'CityName',
+                editor: {
+                    xtype: 'combobox',
+                    store: city, // It is a function
+                    displayField: 'CityName',
+                    valueField: 'CityName',
+                    typeAhead: true,
+                    mode: 'remote',
+                    //forceSelection: true,
+                    //triggerAction: 'all'
+
+                    // static mode
+                    //store: city, // It is a function
+                    //displayField: 'name',
+                    //valueField: 'abbr',
+
+                    //other mode
+                    //    store: Ext.create('Ext.data.Store', {
+                    //        fields: ['id', 'name', 'mydata'],
+                    //        data: [
+                    //            { 'id': '1', 'name': 'John Smith', 'mydata': ["3", "4"] },
+                    //            { 'id': '2', 'name': 'Albert Einstein', 'mydata': ["1", "2"] }
+                    //        ]
+                    //    }),
+                    //    listeners: {
+                    //        select: function (combo, records, eOpts) {
+                    //            alert(records[0].get('mydata')); //
+
+                    //            //Using JQuery Ajax to call the relevant method
+                    //        }
+                    //    }
+                    //}
+                }
+            }, {
+                header: 'Province',
+                dataIndex: 'ProvinceName',
+                editor: {
+                    xtype: 'combobox',
+                    store: province, // It is a function
+                    displayField: 'ProvinceName',
+                    valueField: 'ProvinceName',
+                    typeAhead: true,
+                    mode: 'remote',
+                    //forceSelection: true,
+                    //triggerAction: 'all'
+
+                }
+        //}, {
+        //    text: 'Province',
+        //    width: 120,
+        //    sortable: true,
+        //    dataIndex: 'ProvinceName',
+        //    field: {
+        //        xtype: 'textfield'
+        //    }
         }],
         dockedItems: [{
             xtype: 'toolbar',

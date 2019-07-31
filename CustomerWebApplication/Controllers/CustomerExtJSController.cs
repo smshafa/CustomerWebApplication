@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -37,14 +38,16 @@ namespace CustomerWebApplication.Controllers
 
             return response;
         }
-        
 
-        public JsonResult Load(int? start, int? limit)
+
+        public JsonResult Load()
         {
 
-            Task<HttpResponseMessage> response = CallGetIDApi();
-            response.Wait();
+            Helper.CustomerWebApiRepository customerWebApiRepository = new Helper.CustomerWebApiRepository();
 
+
+            Task<HttpResponseMessage> response = customerWebApiRepository.Get();
+            response.Wait();
 
             string jsonContent = default;
 
@@ -53,16 +56,23 @@ namespace CustomerWebApplication.Controllers
             {
                 HttpContent requestContent = response.Result.Content;
                 jsonContent = requestContent.ReadAsStringAsync().Result;
-                
-                customerViewModel = JsonConvert.DeserializeObject<List<CustomerViewModel>>(jsonContent);               
-            }           
+
+                customerViewModel = JsonConvert.DeserializeObject<List<CustomerViewModel>>(jsonContent);
+
+                return Json(new
+                {
+                    data = customerViewModel,
+                    success = true,
+                    message = "Loaded data is successful."
+                }, JsonRequestBehavior.AllowGet);
+            }
 
             return Json(new
             {
                 data = customerViewModel,
-                success = true,
-                message = "Loaded data"
-            }, JsonRequestBehavior.AllowGet);           
+                success = false,
+                message = "Loaded data was failed."
+            }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -75,10 +85,26 @@ namespace CustomerWebApplication.Controllers
             //    success = true,
             //    message = "Create method called successfully"
             //});
-            return Json(new
-            {
 
-            });
+            Helper.CustomerWebApiRepository customerWebApiRepository = new Helper.CustomerWebApiRepository();
+            CustomerViewModel customerViewModel = JsonConvert.DeserializeObject<CustomerViewModel>(data);
+
+
+            Task<HttpResponseMessage> response = customerWebApiRepository.Post(customerViewModel);
+            response.Wait();
+
+            if (response.Result.StatusCode != HttpStatusCode.Created)
+                return Json(new
+                {
+                    success = true,
+                    message = "Create method called unsuccessfully"
+                });
+            else
+                return Json(new
+                {
+                    success = true,
+                    message = "Create method called successfully"
+                });
         }
 
         [HttpPost]
@@ -86,7 +112,26 @@ namespace CustomerWebApplication.Controllers
         {
             //Console.WriteLine(data[0].BirthDate);
             //insert Update code
+            Helper.CustomerWebApiRepository customerWebApiRepository = new Helper.CustomerWebApiRepository();
+            CustomerViewModel customerViewModel = JsonConvert.DeserializeObject<CustomerViewModel>(data);
 
+
+            Task<HttpResponseMessage> response = customerWebApiRepository.Put(customerViewModel.CustomerID, customerViewModel);
+            response.Wait();
+
+            if (response.Result.StatusCode != HttpStatusCode.OK)
+                return Json(new
+                {
+                    success = false,
+                    message = "Update method called unsuccessfully"
+                });
+            else
+
+                return Json(new
+                {
+                    success = true,
+                    message = "Update method called successfully"
+                });
 
             return Json(new
             {
@@ -98,12 +143,26 @@ namespace CustomerWebApplication.Controllers
         [HttpPost]
         public JsonResult Delete(string data)
         {
-            //insert Delete code
-            return Json(new
-            {
-                success = true,
-                message = "Delete method called successfully"
-            });
+            Helper.CustomerWebApiRepository customerWebApiRepository = new Helper.CustomerWebApiRepository();
+            CustomerViewModel customerViewModel = JsonConvert.DeserializeObject<CustomerViewModel>(data);
+
+
+            Task<HttpResponseMessage> response = customerWebApiRepository.Delete(customerViewModel.CustomerID);
+            response.Wait();
+
+            if (response.Result.StatusCode != HttpStatusCode.OK)
+                return Json(new
+                {
+                    success = false,
+                    message = "Delete method called unsuccessfully"
+                });
+            else
+
+                return Json(new
+                {
+                    success = true,
+                    message = "Delete method called successfully"
+                });
         }
     }
 }

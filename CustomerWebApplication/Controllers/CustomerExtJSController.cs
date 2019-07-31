@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using Customer.BusinessLayer;
+using Customer.DataLayer;
 using Customer.ServiceLayer.ViewModels;
 using Newtonsoft.Json;
 
@@ -164,5 +166,87 @@ namespace CustomerWebApplication.Controllers
                     message = "Delete method called successfully"
                 });
         }
+
+        /// <summary>
+        /// Fill City Combo-Box
+        /// </summary>
+        /// <returns></returns>
+        //https://jorgeramon.me/2009/extjs-with-asp-net-mvc-sample/
+        public JsonResult City()
+        {
+
+            CustomerUnitOfWork unitOfWork = new CustomerUnitOfWork();
+
+
+            List<City> cities = new List<City>();
+            cities.AddRange(unitOfWork.GetRepoInstance<Customer.DataLayer.City>().GetAll());
+
+            var citieslEnumerable =
+                from c in cities
+                select new { c.CityID, c.CityName };
+
+
+            //city c1 = new city();
+            //c1.CityID = 1;
+            //c1.CityName = "yyyyy";
+
+            //city c2 = new city();
+            //c2.CityID = 2;
+            //c2.CityName = "ttttttt";
+
+            //List<city> cities = new List<city>();
+            //cities.Add(c1);
+            //cities.Add(c2);
+
+            return Json(new
+            {
+                //total = 2,
+                data = citieslEnumerable,
+                success = true,
+                message = "Loaded cities data"
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+        /// <summary>
+        /// Fill Province Combo-Box
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult Province()
+        {
+
+            CustomerUnitOfWork unitOfWork = new CustomerUnitOfWork();
+
+
+            List<Province> provinces = new List<Province>();
+            provinces.AddRange(unitOfWork.GetRepoInstance<Customer.DataLayer.Province>().GetAll());
+
+            var provincesEnumerable =
+                from c in provinces
+                select new { c.ProvinceID, c.ProvinceName };
+
+
+
+
+            return Json(new
+            {
+                //total = 2,
+                data = provincesEnumerable,
+                success = true,
+                message = "Loaded citiprovinceses data"
+            }, JsonRequestBehavior.AllowGet);
+        }
+
+
+    }
+    class city
+    {
+        public int CityID { set; get; }
+        public string CityName { set; get; }
+
     }
 }
+
+    
+
+    
+

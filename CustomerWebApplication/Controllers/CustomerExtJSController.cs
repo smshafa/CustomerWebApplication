@@ -1,0 +1,111 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Script.Serialization;
+using Customer.ServiceLayer.ViewModels;
+
+namespace CustomerWebApplication.Controllers
+{
+    public class CustomerExtJSController : Controller
+    {
+        // GET: CustomerExtJS
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+
+        public Task<HttpResponseMessage> CallGetIDApi()
+        {
+            // Arrange
+            Task<HttpResponseMessage> response;
+
+            HttpClient client = new HttpClient();
+
+            client.BaseAddress = new Uri("https://localhost:44311/");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+            // New code:
+            response = client.GetAsync("api/customers/");
+
+            return response;
+        }
+
+        public JsonResult Load(int? start, int? limit)
+        {
+
+            Task<HttpResponseMessage> response = CallGetIDApi();
+            response.Wait();
+
+            int count = 0;
+            JsonResult jsonResult = null;
+            string jsonContent = default;
+            if (response.Result.IsSuccessStatusCode)
+            {
+                HttpContent requestContent = response.Result.Content;
+                jsonContent = requestContent.ReadAsStringAsync().Result;
+                count = 30;
+                jsonResult = Json(jsonContent);
+
+                //return jsonResult;
+            }
+
+            return Json(new
+            {
+                total = count,
+                data = jsonContent
+            }, JsonRequestBehavior.AllowGet);
+
+            //return Json(new
+            //{
+            //    total = 4,
+            //    data = contact,
+            //}, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult Create(List<CustomerViewModel> data)
+        {
+            //insert Create code
+            //return Json(new
+            //{
+            //    data = new Contact(data[0].Name, data[0].Phone, data[0].Email, data[0].BirthDate, data[0].IsMarried, data[0].NoOfCar),
+            //    success = true,
+            //    message = "Create method called successfully"
+            //});
+            return Json(new
+            {
+
+            });
+        }
+
+        [HttpPost]
+        public JsonResult Update(List<CustomerViewModel> data)
+        {
+            //Console.WriteLine(data[0].BirthDate);
+            //insert Update code
+            return Json(new
+            {
+                success = true,
+                message = "Update method called successfully"
+            });
+        }
+
+        [HttpPost]
+        public JsonResult Delete(List<string> data)
+        {
+            //insert Delete code
+            return Json(new
+            {
+                success = true,
+                message = "Delete method called successfully"
+            });
+        }
+    }
+}

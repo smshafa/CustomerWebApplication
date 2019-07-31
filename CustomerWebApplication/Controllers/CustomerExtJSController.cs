@@ -66,7 +66,7 @@ namespace CustomerWebApplication.Controllers
         }
 
         [HttpPost]
-        public JsonResult Create(List<CustomerViewModel> data)
+        public JsonResult Create(string data)
         {
             //insert Create code
             //return Json(new
@@ -82,10 +82,12 @@ namespace CustomerWebApplication.Controllers
         }
 
         [HttpPost]
-        public JsonResult Update(List<CustomerViewModel> data)
+        public JsonResult Update(string data)
         {
             //Console.WriteLine(data[0].BirthDate);
             //insert Update code
+
+
             return Json(new
             {
                 success = true,
@@ -94,7 +96,7 @@ namespace CustomerWebApplication.Controllers
         }
 
         [HttpPost]
-        public JsonResult Delete(List<string> data)
+        public JsonResult Delete(string data)
         {
             //insert Delete code
             return Json(new

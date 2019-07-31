@@ -103,10 +103,22 @@ Ext.onReady(function () {
                 }
                 Ext.example.msg(name, Ext.String.format("{0} customer: {1}", verb, record.getId()));
 
+                if (name == 'Create') {
+                    alert('Created.');                    
+                    //store.reload.refresh();
+                }
+                if (name == 'Update') {
+                    alert('update');
+                    //store.reload();
+                    //grid.store.reload();
+                }
+
             }
         }
     });
     
+    //myGrid.store.reload();
+    //myGrid.getView().refresh();
 
     var grid = Ext.create('Ext.grid.Panel', {
         renderTo: document.body,
@@ -118,12 +130,28 @@ Ext.onReady(function () {
                         if (context.record.phantom) {
                             store.remove(context.record);
                         }
+                    },
+                    edit: function(editor, e) {
+                        // commit the changes right after editing finished                        
+                        e.record.commit();
+                        store.add(e);
+                        alert('hi');
+
+                        grid.store.reload();
+                        //Ext.getCmp('crud-grid').getView().refresh();
+                        //grid.getView().refresh();                        
+
+                        //this.store.refresh();
+                        //this.getView().refresh();
+                        //grid.getView().refresh();
                     }
                 }
             }
         },
         width: 800,
         height: 330,
+        renderTo: 'crud-grid',
+        style: 'margin-top: 10px',
         frame: true,
         title: 'Customers',
         store: store,
@@ -177,9 +205,19 @@ Ext.onReady(function () {
                 handler: function () {
                     // empty record
                     var rec = new Customer();
+                    
+
                     var rowEditing = grid.findPlugin('rowediting');
                     store.insert(0, rec);
                     rowEditing.startEdit(rec, 0);
+
+                    //Ext.getCmp('crud-grid').getView().refresh();
+                    //neww
+                    //editor.stopEditing();
+
+                    //grid.getView().refresh();
+                    //grid.getSelectionModel().selectRow(0);
+                    //rowEditing.startEditing(0);
                 }
             }, '-', {
                 itemId: 'delete',
@@ -192,7 +230,19 @@ Ext.onReady(function () {
                         store.remove(selection);
                     }
                 }
-            }]
+                }, '-', {
+                    itemId: 'refresh',
+                    text: 'Refresh',
+                    iconCls: 'icon-delete',
+                    disabled: false,
+                    handler: function () {
+                        grid.store.refresh();
+                        grid.getView().getSelectionModel().selectRow(0);
+                        grid.getView().reload();
+
+                    }
+                }
+            ]
         }]
     });
     grid.getSelectionModel().on('selectionchange', function (selModel, selections) {

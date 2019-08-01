@@ -17,7 +17,7 @@
 
         <link rel="stylesheet" type="text/css" href="~/shared/examples.css" />
 
-        Uses static and rtl theme.
+        @*Uses static and rtl theme.*@
         <link rel="stylesheet" type="text/css" href="~/build/classic/theme-neptune/resources/theme-neptune-all-rtl.css">
         <script type="text/javascript" src="~/build/ext-all-rtl.js"></script>
         <script>
@@ -25,15 +25,25 @@
             Ext.application({
                 name: 'MyApp',
                 launch: function () {
-
-                    Ext.create('Ext.container.Viewport', {
-                        renderTo: Ext.getBody(),
-                        rtl: true,
-                        html: "hello I am a bunch of text"
-                    });
-
+                   
+                    Ext.create('Ext.container.Viewport',
+                        {
+                            //layout: 'border',
+                            //xtype: 'panel', // This your UserGrid
+                            renderTo: Ext.getBody(),
+                            //margin: '100 100 100 100',
+                            layout: 'fit',
+                            region: 'center',
+                            //html: "<div id='crud-grid'></div>",
+                            rtl: true,
+                            title: 'East Panel',
+                            //html: "hello I am a bunch of text"
+                        }
+                    )
                 }
             });
+
+                  
 
         </script>
 
@@ -64,6 +74,6 @@
 
 <h2>Index</h2>
 
-<div id="crud-grid" style="margin-top:60px;width:100%;">
+@*<div id="crud-grid" style="margin-top:200px;width:100%;">*@
 
-</div>
+@*</div>*@

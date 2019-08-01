@@ -212,10 +212,90 @@ Ext.onReady(function () {
     //myGrid.store.reload();
     //myGrid.getView().refresh();
 
+    //https://docs.sencha.com/extjs/6.0.2/classic/Ext.plugin.Viewport.html
+    //Ext.create('Ext.container.Viewport', {
+    //    layout: 'fit', // full the viewport with the tab panel
+
+    //    items: [{
+    //        xtype: 'panel'//,
+    //        items: [{
+    //            ...
+    //     }]
+    //    }]
+    //});
+
+    //Ext.create('Ext.tab.Panel', {
+    //    plugins: 'viewport',
+
+    //    items: [{
+    //        ...
+    // }]
+    //});
+
+
+
+    //https://docs.sencha.com/extjs/6.0.2/classic/Ext.container.Viewport.html
+    //Ext.create('Ext.container.Viewport', {
+    //    layout: 'border',
+    //    renderTo: Ext.getBody(),
+    //    rtl: true,
+    //    items: [
+            //{
+            //    region: 'north',
+            //    html: '<h1 class="x-panel-header">Page Title</h1>',
+            //    border: false,
+            //    margin: '0 0 5 0'
+            //}//, {
+            //    region: 'west',
+            //    collapsible: true,
+            //    title: 'Navigation',
+            //    width: 150
+            //    // could use a TreePanel or AccordionLayout for navigational items
+            //}, {
+            //    region: 'south',
+            //    title: 'South Panel',
+            //    collapsible: true,
+            //    html: 'Information goes here',
+            //    split: true,
+            //    height: 100,
+            //    minHeight: 100
+            //}, {
+            //    region: 'east',
+            //    title: 'East Panel',
+            //    collapsible: true,
+            //    split: true,
+            //    width: 150
+            //},
+            //,{
+            //    region: 'center',
+            //    xtype: 'tabpanel', // TabPanel itself has no title
+            //    activeTab: 0,      // First tab active by default
+            //    items: {
+            //        title: 'Default Tab',
+            //        //html: 'The first tab\'s content. Others may be added dynamically'
+            //    }
+            //}
+
+
+    //        {
+    //            region: 'center',
+    //            border: false,
+    //            layout: 'fit'               
+    //        }
+    //    ]
+    //});
+
+
+    
+
+    
+
     var grid = Ext.create('Ext.grid.Panel', {
         renderTo: document.body,
         plugins: {
             rowediting: {
+                clicksToEdit: 1,
+                clicksToMoveEditor: 1,
                 listeners: {
                     cancelEdit: function (rowEditing, context) {
                         // Canceling editing of a locally added, unsaved record: remove it
@@ -234,10 +314,27 @@ Ext.onReady(function () {
                 }
             }
         },
-        width: 800,
-        height: 330,
-        renderTo: 'crud-grid',
-        style: 'margin-top: 10px',
+        // *** if viewport doesn't need, set width and height:
+        //width: 800,
+        //height: 330,
+
+        //plugins: 'viewport', // add this component to the viewport container.
+
+        // *** if viewport doesn't need, set which container of html page should keep the grid:
+        //renderTo: 'crud-grid',
+
+        // ******configuration of  view-port:
+        autoScroll: true,
+        collapsible: true,
+        //region: 'east',
+        region: 'west',
+        split: true,
+        // if you want to the grid fit to the page's width, delete this property.
+        //width: 700,
+        rtl: true,
+        //**********
+        
+        //style: 'margin-top: 10px',
         frame: true,
         title: 'مشتریان',
         store: store,
@@ -334,6 +431,7 @@ Ext.onReady(function () {
         }],
         dockedItems: [{
             xtype: 'toolbar',
+            style: 'margin-top: 20px',
             items: [{
                 text: 'اضافه کردن',
                 iconCls: 'icon-add',
@@ -383,5 +481,64 @@ Ext.onReady(function () {
     });
     grid.getSelectionModel().on('selectionchange', function (selModel, selections) {
         grid.down('#delete').setDisabled(selections.length === 0);
+    });   
+
+
+    var tree = Ext.create('Ext.tree.Panel', {
+        collapsible: true,
+        region: 'west',
+        rootVisible: false,
+        store: store,
+        title: 'Book Details Tree',
+        width: 200
     });
+
+    //// *** it works: *********
+    //Ext.create('Ext.container.Viewport',
+    //    {
+    //        layout: 'border',
+    //        renderTo: Ext.getBody(),
+    //        rtl: true,
+    //        //items: [tree, grid]
+    //        items: [grid]
+    //    }
+    //);
+
+
+    //Ext.create('Ext.container.Viewport',
+    //    {
+    //        layout: 'border',
+    //        renderTo: Ext.getBody(),
+    //        rtl: true,
+    //        items:
+    //            [
+    //                {
+    //                    grid,
+    //                    //layout: 'border',
+    //                    //xtype: 'panel', // This your UserGrid
+    //                    //renderTo: Ext.getBody(),
+    //                    //margin: '100 100 100 100',
+    //                    //layout: 'fit',
+    //                    region: 'center',
+    //                    //html: "<div id='crud-grid'></div>",
+    //                    rtl: true,
+    //                    title: 'East Panel',
+    //                    //html: "hello I am a bunch of text"
+    //                    //html: grid,//'<h1 class="x-panel-header">Page Title</h1>',
+    //                    border: false,
+    //                },
+    //                , {
+    //                    region: 'west',
+    //                    collapsible: true,
+    //                    title: 'Navigation',
+    //                    width: 150,
+    //                    html: 'jsdfkjssdfjksdjfk'
+    //                    // could use a TreePanel or AccordionLayout for navigational items
+    //                }
+    //            ]
+    //    }
+    //);
+
+    //var rowEditing = grid.findPlugin('rowediting');
+    //rowEditing.startEdit(0, 0);
 });

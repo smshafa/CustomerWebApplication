@@ -31,15 +31,24 @@ Ext.define('Customer', {
         type: 'int',
         //useNull: true
     }, 'FirstName', 'LastName', 'CityName', 'ProvinceName'],
-    validations: [ {
+    validations: [{
         type: 'length',
         field: 'FirstName',
-        min: 1
-    }, {
+        min: 1,
+        max: 60
+    }
+        , {
         type: 'length',
         field: 'LastName',
-        min: 1
-    }]
+        min: 1,
+        max: 60
+    }
+        , {
+        type: 'notnull',
+        field: 'FirstName',
+        message: 'not null'
+    }
+    ]
 });
 
 
@@ -104,13 +113,12 @@ Ext.onReady(function () {
                 Ext.example.msg(name, Ext.String.format("{0} customer: {1}", verb, record.getId()));
 
                 if (name == 'Create') {
-                    alert('Created.');                    
-                    //store.reload.refresh();
+                    alert('Created.'); 
+                    //Ext.example.msg(name, Ext.String.format("مشتری {1} اضافه گردید.", verb, record.getId()));
                 }
                 if (name == 'Update') {
-                    alert('update');
-                    //store.reload();
-                    //grid.store.reload();
+                    alert('update');                    
+                    //Ext.example.msg(name, Ext.String.format("مشتری {1} بروز گردید.", verb, record.getId()));
                 }
 
             }
@@ -221,13 +229,7 @@ Ext.onReady(function () {
                         store.add(e);
                         alert('hi');
 
-                        grid.store.reload();
-                        //Ext.getCmp('crud-grid').getView().refresh();
-                        //grid.getView().refresh();                        
-
-                        //this.store.refresh();
-                        //this.getView().refresh();
-                        //grid.getView().refresh();
+                        grid.store.reload();                        
                     }
                 }
             }
@@ -237,7 +239,7 @@ Ext.onReady(function () {
         renderTo: 'crud-grid',
         style: 'margin-top: 10px',
         frame: true,
-        title: 'Customers',
+        title: 'مشتریان',
         store: store,
         iconCls: 'icon-user',
         columns: [{
@@ -249,7 +251,7 @@ Ext.onReady(function () {
                 return rec.phantom ? '' : v;
             }
         }, {
-            header: 'First Name',
+            header: 'نام',
             width: 120,
             sortable: true,
             dataIndex: 'FirstName',
@@ -257,7 +259,7 @@ Ext.onReady(function () {
                 xtype: 'textfield'
             }
         }, {
-            text: 'Last Name',
+            text: 'نام خانوادگی',
             width: 120,
             sortable: true,
             dataIndex: 'LastName',
@@ -273,7 +275,7 @@ Ext.onReady(function () {
                 //        xtype: 'textfield'
                 //    }
             }, {
-                header: 'City',
+                header: 'شهر',
                 dataIndex: 'CityName',
                 editor: {
                     xtype: 'combobox',
@@ -308,7 +310,7 @@ Ext.onReady(function () {
                     //}
                 }
             }, {
-                header: 'Province',
+                header: 'استان',
                 dataIndex: 'ProvinceName',
                 editor: {
                     xtype: 'combobox',
@@ -333,7 +335,7 @@ Ext.onReady(function () {
         dockedItems: [{
             xtype: 'toolbar',
             items: [{
-                text: 'Add',
+                text: 'اضافه کردن',
                 iconCls: 'icon-add',
                 handler: function () {
                     // empty record
@@ -354,7 +356,7 @@ Ext.onReady(function () {
                 }
             }, '-', {
                 itemId: 'delete',
-                text: 'Delete',
+                text: 'حذف',
                 iconCls: 'icon-delete',
                 disabled: true,
                 handler: function () {
@@ -365,13 +367,14 @@ Ext.onReady(function () {
                 }
                 }, '-', {
                     itemId: 'refresh',
-                    text: 'Refresh',
+                    text: 'تازه‌سازی',
                     iconCls: 'icon-delete',
                     disabled: false,
                     handler: function () {
-                        grid.store.refresh();
-                        grid.getView().getSelectionModel().selectRow(0);
-                        grid.getView().reload();
+                        grid.store.reload();
+                        //grid.store.refresh();
+                        //grid.getView().getSelectionModel().selectRow(0);
+                        //grid.getView().reload();
 
                     }
                 }

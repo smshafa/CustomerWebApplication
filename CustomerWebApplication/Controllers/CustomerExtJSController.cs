@@ -236,7 +236,31 @@ namespace CustomerWebApplication.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+        public JsonResult GetCity(string province)
+        {
 
+            CustomerUnitOfWork unitOfWork = new CustomerUnitOfWork();
+
+
+            List<City> cities = new List<City>();
+            cities.AddRange(unitOfWork.GetRepoInstance<Customer.DataLayer.City>().GetAll());
+
+            var cityEnumerable =
+                from c in cities
+                where c.Province.ProvinceName == province
+                select new {c.CityID, c.CityName};
+
+
+
+
+            return Json(new
+            {
+                //total = 2,
+                data = cityEnumerable,
+                success = true,
+                message = "Loaded citiprovinceses data"
+            }, JsonRequestBehavior.AllowGet);
+        }
     }
     class city
     {

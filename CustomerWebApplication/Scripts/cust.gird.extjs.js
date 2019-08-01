@@ -117,6 +117,40 @@ Ext.onReady(function () {
         }
     });
 
+
+    Ext.define('ProvinceModel', {
+        extend: 'Ext.data.Model',
+        fields: [{
+                name: 'ProvinceID',
+                type: 'int'
+            }, {
+                name: 'ProvinceName',
+                type: 'string'
+            },
+
+        ]
+    });
+
+    var province = Ext.create('Ext.data.Store', {
+        //url: '/CustomerExtJS/City',
+        //root: 'data',
+        //fields: ['CityID', 'CityName'],
+        model: 'ProvinceModel',
+        //data:
+        autoLoad: false,
+        proxy: {
+            type: 'ajax',
+            url: '/CustomerExtJS/Province',
+            reader: {
+                type: 'json',
+                rootProperty: 'data'
+            }
+        },
+        
+    });
+
+    
+
     // The data store containing the list of states
     // static mode
     //var city = Ext.create('Ext.data.Store', {
@@ -171,35 +205,25 @@ Ext.onReady(function () {
         //autoLoad: true
     });
 
-    Ext.define('ProvinceModel', {
-        extend: 'Ext.data.Model',
-        fields: [{
-            name: 'ProvinceID',
-            type: 'int'
-        }, {
-            name: 'ProvinceName',
-            type: 'string'
-        },
-
-        ]
-    });
-
-    var province = Ext.create('Ext.data.Store', {
-        //url: '/CustomerExtJS/City',
+    //http://abdelraoof.com/blog/2011/01/28/cascading-combo-box-in-ext-js/
+    var cityStore = Ext.create('Ext.data.Store', {
+        autoLoad: false,
+        model: 'CityModel',
+        pruneModifiedRecords: true,
+        //type: 'ajax',
         //root: 'data',
+        //url: '/CustomerExtJS/GetCity',
         //fields: ['CityID', 'CityName'],
-        model: 'ProvinceModel',
-        //data:
         proxy: {
             type: 'ajax',
-            url: '/CustomerExtJS/Province',
+            url: '/CustomerExtJS/GetCity',
             reader: {
                 type: 'json',
                 rootProperty: 'data'
             }
-        },
-        autoLoad: true
+        }
     });
+    
 
     //myGrid.store.reload();
     //myGrid.getView().refresh();
@@ -273,18 +297,53 @@ Ext.onReady(function () {
                 //        xtype: 'textfield'
                 //    }
             }, {
+                header: 'Province',
+                dataIndex: 'ProvinceName',
+                editor: {
+                    xtype: 'combobox',
+                    store: province, // It is a function
+                    displayField: 'ProvinceName',
+                    valueField: 'ProvinceName',
+                    typeAhead: true,
+                    //queryMode: 'local',
+                    hiddenName: 'Province',
+                    //triggerAction: 'all',
+                    //id: 'province',
+                    listeners: {
+                        'select': function (combo, records) {
+                            //alert(records[0].get('descricao'));
+                            //var p = records[0].get('descricao');
+
+                            //value = this.getValue();
+                            //var record = this.findRecordByValue(value);
+                            //var index = this.getStore().indexOf(record);
+
+                            //alert(combo.getValue());
+ 
+                            cityStore.load({
+                                params: { 'province': combo.getValue() }
+                            });
+                        }
+                    }
+                    //forceSelection: true,
+                    //triggerAction: 'all'
+                }
+            }, {
                 header: 'City',
                 dataIndex: 'CityName',
                 editor: {
                     xtype: 'combobox',
-                    store: city, // It is a function
+                    //store: city, // It is a function***
+                    store: cityStore,
                     displayField: 'CityName',
                     valueField: 'CityName',
                     typeAhead: true,
-                    mode: 'remote',
-                    //forceSelection: true,
+                    queryMode: 'local', //https://forums.ext.net/showthread.php?20126-CLOSED-Store-loads-twice
+                    forceSelection: true,
                     //triggerAction: 'all'
-
+                    editable: false,
+                    allowBlank: false,
+                    emptyText: 'Select a City',
                     // static mode
                     //store: city, // It is a function
                     //displayField: 'name',
@@ -306,19 +365,8 @@ Ext.onReady(function () {
                     //        }
                     //    }
                     //}
-                }
-            }, {
-                header: 'Province',
-                dataIndex: 'ProvinceName',
-                editor: {
-                    xtype: 'combobox',
-                    store: province, // It is a function
-                    displayField: 'ProvinceName',
-                    valueField: 'ProvinceName',
-                    typeAhead: true,
-                    mode: 'remote',
-                    //forceSelection: true,
-                    //triggerAction: 'all'
+                
+                
 
                 }
         //}, {
@@ -382,3 +430,53 @@ Ext.onReady(function () {
         grid.down('#delete').setDisabled(selections.length === 0);
     });
 });
+
+
+//https://fiddle.sencha.com/#fiddle/ob5&view/editor
+//https://fiddle.sencha.com/#fiddle/s5f&view/editor
+ //   https://fiddle.sencha.com/#view/editor&fiddle/2f6d
+
+
+//Example:
+//Ext.define('Customer', {
+//    extend: 'Ext.data.Model',
+
+//    config: {
+//        fields: [
+//            'text',
+//            'value'
+//        ]
+//    }
+//});
+
+//var CustomerStore = Ext.create('Ext.data.Store', {
+//    autoLoad: true,
+//    model: 'Customer',
+//    proxy: {
+//        type: 'ajax',
+//        url: 'data/json.json',
+//        reader: {
+//            type: 'json',
+//            rootProperty: 'data'
+//        }
+//    },
+//    listeners: {
+//        load: function (store, records) {
+//            console.log(records.length);
+//        }
+//    }
+//});
+
+// data / json.json :
+//{
+//    "data" : [
+//        {
+//            "text": "CustOneFromC#",
+//            "value": "1"
+//        },
+//        {
+//            "text": "CustTwoFromC#",
+//            "value": "2"
+//        }
+//    ]
+//}

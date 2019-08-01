@@ -323,7 +323,7 @@ Ext.onReady(function () {
         // *** if viewport doesn't need, set which container of html page should keep the grid:
         //renderTo: 'crud-grid',
 
-        // ******configuration of  view-port:
+        // ******configuration of  view-port: https://www.sencha.com/forum/showthread.php?163309-Ext-js-4-Viewport-implementation
         autoScroll: true,
         collapsible: true,
         //region: 'east',

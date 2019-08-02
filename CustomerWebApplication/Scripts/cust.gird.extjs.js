@@ -376,15 +376,27 @@ Ext.onReady(function () {
             }
         }, {
             header: 'نام',
-            width: 120,
+            width: 220,
             sortable: true,
             dataIndex: 'FirstName',
+            // Hier you can put make your validation
+            renderer: function (value, metaData) {
+                //console.log(arguments);                
+                var patt = /[0-9]/g;
+                var result = value.match(patt);
+                console.log(result);
+                if (result != null) {
+                    metaData.innerCls = 'invalidCell';
+                    metaData.tdAttr = 'data-qtip="Name must not containe t"';
+                }                
+                return value;
+            },
             field: {
                 xtype: 'textfield'
             }
         }, {
             text: 'نام خانوادگی',
-            width: 120,
+            width: 220,
             sortable: true,
             dataIndex: 'LastName',
             field: {

@@ -91,22 +91,35 @@ namespace CustomerWebApplication.Controllers
             Helper.CustomerWebApiRepository customerWebApiRepository = new Helper.CustomerWebApiRepository();
             CustomerViewModel customerViewModel = JsonConvert.DeserializeObject<CustomerViewModel>(data);
 
+            if (string.IsNullOrEmpty(customerViewModel.FirstName))
+            {
+                ModelState.AddModelError("Name", "Name is required");
+            }
 
-            Task<HttpResponseMessage> response = customerWebApiRepository.Post(customerViewModel);
-            response.Wait();
+            if (ModelState.IsValid)
+            {
+                Task<HttpResponseMessage> response = customerWebApiRepository.Post(customerViewModel);
+                response.Wait();
 
-            if (response.Result.StatusCode != HttpStatusCode.Created)
-                return Json(new
-                {
-                    success = true,
-                    message = "Create method called unsuccessfully"
-                });
-            else
-                return Json(new
-                {
-                    success = true,
-                    message = "Create method called successfully"
-                });
+                if (response.Result.StatusCode != HttpStatusCode.Created)
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Create method called unsuccessfully"
+                    });
+                else
+                    return Json(new
+                    {
+                        success = true,
+                        message = "Create method called successfully"
+                    });
+            }
+
+            return Json(new
+            {
+                success = false,
+                message = "Create method called unsuccessfully"
+            });
         }
 
         [HttpPost]
@@ -135,11 +148,11 @@ namespace CustomerWebApplication.Controllers
                     message = "Update method called successfully"
                 });
 
-            return Json(new
-            {
-                success = true,
-                message = "Update method called successfully"
-            });
+            //return Json(new
+            //{
+            //    success = true,
+            //    message = "Update method called successfully"
+            //});
         }
 
         [HttpPost]

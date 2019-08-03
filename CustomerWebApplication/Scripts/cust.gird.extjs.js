@@ -23,33 +23,36 @@
 //});
 
 //Asus
-Ext.define('Customer', {
-    extend: 'Ext.data.Model',
-    idProperty: 'customerId',
-    fields: [{
-        name: 'CustomerID',
-        type: 'int',
-        //useNull: true
-    }, 'FirstName', 'LastName', 'CityName', 'ProvinceName'],
-    validations: [{
-        type: 'length',
-        field: 'FirstName',
-        min: 1,
-        max: 60
-    }
-        , {
-        type: 'length',
-        field: 'LastName',
-        min: 1,
-        max: 60
-    }
-        , {
-        type: 'notnull',
-        field: 'FirstName',
-        message: 'not null'
-    }
-    ]
-});
+Ext.define('Customer',
+    {
+        extend: 'Ext.data.Model',
+        idProperty: 'customerId',
+        fields: [
+            {
+                name: 'CustomerID',
+                type: 'int',
+                //useNull: true
+            }, 'FirstName', 'LastName', 'CityName', 'ProvinceName'
+        ],
+        validations: [
+            //{
+            //    type: 'length',
+            //    field: 'FirstName',
+            //    min: 1,
+            //    max: 60
+            //}, {
+            {
+                type: 'length',
+                field: 'LastName',
+                min: 1,
+                max: 60
+            }, {
+                type: 'notnull',
+                field: 'FirstName',
+                message: 'not null'
+            }
+        ]
+    });
 
 
 Ext.onReady(function () {
@@ -58,6 +61,7 @@ Ext.onReady(function () {
         autoLoad: true,
         autoSync: true,
         model: 'Customer',
+        
         //proxy: {
         //    type: 'rest',
         //    url: '/CustomerExtJS/Load',
@@ -94,11 +98,30 @@ Ext.onReady(function () {
                 root: 'data',                
                 encode: true,                
                 rootProperty: 'data',
-                writeRecordId: false //By default, each record's id is always included in the output for non-phantom records since in most cases the id will be required on the server to process th
+                writeRecordId: false, //By default, each record's id is always included in the output for non-phantom records since in most cases the id will be required on the server to process th
+                successProperty: 'success',
+                messageProperty: 'message'
             }
         },      
         listeners: {
-            write: function (store, operation) {
+            load: function(store, record, success, opts) {
+                var response_text = store.proxy.reader.rawData;
+                console.log(response_text);
+                var data = Ext.JSON.decode(action.response.responseText);
+                alert(response_text);
+                //alert(success);
+            },
+            // not work
+            //load: function (records, operation, success) {
+            //    if (success) {
+            //        console.log("Category: " + category.get('name'));
+            //        alert('s');
+            //    } else {
+            //        console.log('error');
+            //        alert('f');
+            //    }
+            //},
+            write: function (records, operation, success) {
                 var record = operation.getRecords()[0],
                     name = Ext.String.capitalize(operation.action),
                     verb;
@@ -113,16 +136,49 @@ Ext.onReady(function () {
                 Ext.example.msg(name, Ext.String.format("{0} customer: {1}", verb, record.getId()));
 
                 if (name == 'Create') {
-                    alert('Created.'); 
+                    alert('Created.');
+                    a
                     //Ext.example.msg(name, Ext.String.format("مشتری {1} اضافه گردید.", verb, record.getId()));
                 }
                 if (name == 'Update') {
-                    alert('update');       
-                    grid.store.reload();        
+                    alert('update');
+                    
+                    grid.store.reload();
                     //Ext.example.msg(name, Ext.String.format("مشتری {1} بروز گردید.", verb, record.getId()));
                 }
-
+                
+                //},
+                //load: function (store, records, successfull, eOpts) {
+                //    if (successfull) {
+                //        alert('success');
+                //    }
+                //}
             }
+            //, update: function (thisStore, record, operation) {
+            //    console.log('Update happened');
+            //    console.log(record);
+            //    console.log(operation);
+            //    alert('Update happened');
+            //    if (operation.wasSuccessful()) {
+            //        alert('Update dfd');
+            //    } else {
+            //        alert('Update dsfdsfd');
+            //    }
+            //},
+            //save: function () {
+            //    console.log('Save happened');
+            //    alert('Save happened');
+            //},
+            //exception: function (dataproxy, type, action, options, response, arg) {
+            //    alert('Error happened');
+            //    console.log('Error happened');
+            //    console.log(response);
+            //    doJSON(result.responseText);
+            //},
+            //remove: function () {
+            //    console.log("Record removed");
+            //    alert("Record removed");
+            //}
         }
     });
 

@@ -65,15 +65,17 @@ namespace CustomerWebApplication.Controllers
                 {
                     data = customerViewModel,
                     success = true,
-                    message = "Loaded data is successful."
+                    message = "Loaded data is successful.",
+                    status = 200,
                 }, JsonRequestBehavior.AllowGet);
             }
 
             return Json(new
             {
                 data = customerViewModel,
-                success = false,
-                message = "Loaded data was failed."
+                //success = false,
+                message = "Loaded data was failed.",
+                status = 202,
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -97,8 +99,6 @@ namespace CustomerWebApplication.Controllers
                 ModelState.AddModelError("FirstName", "First Name is required");
             }
 
-            
-            
 
             if (ModelState.IsValid)
             {
@@ -108,20 +108,23 @@ namespace CustomerWebApplication.Controllers
                 if (response.Result.StatusCode != HttpStatusCode.Created)
                     return Json(new
                     {
-                        success = false,
+                        //success = false,
+                        status = 202,
                         message = "Create method called unsuccessfully! :("
                     });
                 else
                     return Json(new
                     {
+                        status = 200,
                         success = true,
-                        message = "Create method called successfully :)"
+                        message = "Create method called successfully :) _ First Name is required. "
                     });
             }
             return Json(new
             {
-                success = false,
-                message = "Create method called unsuccessfully :)"
+                //success = false,
+                status = 202,
+                message = "Create method called unsuccessfully :)  _ First Name is required. "
             });
         }
 
@@ -133,28 +136,36 @@ namespace CustomerWebApplication.Controllers
             Helper.CustomerWebApiRepository customerWebApiRepository = new Helper.CustomerWebApiRepository();
             CustomerViewModel customerViewModel = JsonConvert.DeserializeObject<CustomerViewModel>(data);
 
+            if (string.IsNullOrEmpty(customerViewModel.FirstName))
+            {
+                ModelState.AddModelError("FirstName", "First Name is required");
+            }
 
-            Task<HttpResponseMessage> response = customerWebApiRepository.Put(customerViewModel.CustomerID, customerViewModel);
-            response.Wait();
+            if (ModelState.IsValid)
+            {
+                Task<HttpResponseMessage> response = customerWebApiRepository.Put(customerViewModel.CustomerID, customerViewModel);
+                response.Wait();
 
-            if (response.Result.StatusCode != HttpStatusCode.OK)
-                return Json(new
-                {
-                    success = false,
-                    message = "Update method called unsuccessfully"
-                });
-            else
-
-                return Json(new
-                {
-                    success = true,
-                    message = "Update method called successfully"
-                });
-
+                if (response.Result.StatusCode != HttpStatusCode.OK)
+                    return Json(new
+                    {
+                        status = 202,
+                        //success = false,
+                        message = "Update method called unsuccessfully :( _ First Name is required. "
+                    });
+                else
+                    return Json(new
+                    {
+                        status = 200,
+                        success = true,
+                        message = "Update method called successfully"
+                    });
+            }
             return Json(new
             {
-                success = true,
-                message = "Update method called successfully"
+                status = 202,
+                //success = false,
+                message = "Update method called unsuccessfully :( _ First Name is required. "
             });
         }
 
@@ -171,12 +182,14 @@ namespace CustomerWebApplication.Controllers
             if (response.Result.StatusCode != HttpStatusCode.OK)
                 return Json(new
                 {
-                    success = false,
+                    status = 202,
+                    //success = false,
                     message = "Delete method called unsuccessfully :("
                 });
             else
                 return Json(new
                 {
+                    status = 200,
                     success = true,
                     message = "Delete method called successfully :)"
                 });

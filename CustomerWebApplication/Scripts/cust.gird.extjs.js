@@ -52,10 +52,38 @@ Ext.define('Customer', {
     ]
 });
 
+//function requestMessageProcessor(proxy, response) {
+//    if (response && proxy) {
+//        try {
+//            var responseData = proxy.reader.getResponseData(response);
+
+//            if (responseData.message) {
+//                var messageDescription = 'Information'; // title of the alert box
+//                var messageIcon = Ext.MessageBox.INFO;
+
+//                if (!responseData.success) {
+//                    var messageDescription = 'Error';
+//                    var messageIcon = Ext.MessageBox.ERROR;
+//                }
+
+//                Ext.MessageBox.show({
+//                    title: messageDescription,
+//                    msg: responseData.message,
+//                    buttons: Ext.MessageBox.OK,
+//                    icon: messageIcon
+//                });
+//            }
+//        }
+//        catch (err) {
+//            // Malformed response most likely
+//            console.log(err);
+//        }
+//    }
+//}
 
 Ext.onReady(function () {
 
-    var store = Ext.create('Ext.data.Store', {        
+    var store = Ext.create('Ext.data.Store', {
         autoLoad: true,
         autoSync: true,
         model: 'Customer',
@@ -92,22 +120,48 @@ Ext.onReady(function () {
             writer: {
                 type: 'json',   //which data type server will be worked
                 writeAllFields: true,   //true to write all fields from the record to the server. If set to false it will only send the fields that were modified.
-                root: 'data',                
-                encode: true,                
+                root: 'data',
+                encode: true,
                 rootProperty: 'data',
                 writeRecordId: false //By default, each record's id is always included in the output for non-phantom records since in most cases the id will be required on the server to process th
             }
+
+        
         },      
         listeners: {
+            //exception: function (reader, response, error, eOpts) {
+            //    var respObj = Ext.decode(response.responseText);
+            //    if (respObj.success === false) {
+            //        console.log(respObj.error);
+            //        alert(respObj.error);
+            //    }
+            //},
+
+            //exception: function (proxy, response, options) {
+            //    requestMessageProcessor(proxy, response);
+            //},
+            
+            //afterRequest: function (request, success) {
+            //    requestMessageProcessor(request.scope, request.operation.response);
+            //},
+
+
             write: function (store, operation) {
                 var record = operation.getRecords()[0],
                     name = Ext.String.capitalize(operation.action),
                     verb;
 
 
-                alert('before');
-                alert(operation._response.responseText);
-                alert('after');
+                //alert('before');
+                //alert(operation._response.responseText);
+                //alert('after');
+
+                var myResponse = JSON.parse(operation._response.responseText);
+                //alert(myResponse.status);
+                if (myResponse.status == 202) { 
+                    Ext.example.msg(name, Ext.String.format(myResponse.message));
+                }
+
                 //if (operation._response.status == 200) {
                 //    alert("ok");
                 //}

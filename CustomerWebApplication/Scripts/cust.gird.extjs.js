@@ -31,23 +31,24 @@ Ext.define('Customer', {
         type: 'int',
         //useNull: true
     }, 'FirstName', 'LastName', 'CityName', 'ProvinceName'],
-    validations: [{
-        type: 'length',
-        field: 'FirstName',
-        min: 1,
-        max: 60
-    }
-        , {
+    validations: [
+    //    {
+    //    type: 'length',
+    //    field: 'FirstName',
+    //    min: 1,
+    //    max: 60
+    //},
+        {
         type: 'length',
         field: 'LastName',
         min: 1,
         max: 60
     }
-        , {
-        type: 'notnull',
-        field: 'FirstName',
-        message: 'not null'
-    }
+    //    , {
+    //    type: 'notnull',
+    //    field: 'FirstName',
+    //    message: 'not null'
+    //}
     ]
 });
 
@@ -103,6 +104,13 @@ Ext.onReady(function () {
                     name = Ext.String.capitalize(operation.action),
                     verb;
 
+
+                alert('before');
+                alert(operation._response.responseText);
+                alert('after');
+                //if (operation._response.status == 200) {
+                //    alert("ok");
+                //}
 
                 //if (name == 'Destroy') {
                 if (name == 'Delete') {

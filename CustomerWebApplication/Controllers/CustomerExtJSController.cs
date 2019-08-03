@@ -91,22 +91,38 @@ namespace CustomerWebApplication.Controllers
             Helper.CustomerWebApiRepository customerWebApiRepository = new Helper.CustomerWebApiRepository();
             CustomerViewModel customerViewModel = JsonConvert.DeserializeObject<CustomerViewModel>(data);
 
+            // server validation
+            if (string.IsNullOrEmpty(customerViewModel.FirstName))
+            {
+                ModelState.AddModelError("FirstName", "First Name is required");
+            }
 
-            Task<HttpResponseMessage> response = customerWebApiRepository.Post(customerViewModel);
-            response.Wait();
+            
+            
 
-            if (response.Result.StatusCode != HttpStatusCode.Created)
-                return Json(new
-                {
-                    success = true,
-                    message = "Create method called unsuccessfully"
-                });
-            else
-                return Json(new
-                {
-                    success = true,
-                    message = "Create method called successfully"
-                });
+            if (ModelState.IsValid)
+            {
+                Task<HttpResponseMessage> response = customerWebApiRepository.Post(customerViewModel);
+                response.Wait();
+
+                if (response.Result.StatusCode != HttpStatusCode.Created)
+                    return Json(new
+                    {
+                        success = false,
+                        message = "Create method called unsuccessfully! :("
+                    });
+                else
+                    return Json(new
+                    {
+                        success = true,
+                        message = "Create method called successfully :)"
+                    });
+            }
+            return Json(new
+            {
+                success = false,
+                message = "Create method called unsuccessfully :)"
+            });
         }
 
         [HttpPost]
@@ -156,14 +172,13 @@ namespace CustomerWebApplication.Controllers
                 return Json(new
                 {
                     success = false,
-                    message = "Delete method called unsuccessfully"
+                    message = "Delete method called unsuccessfully :("
                 });
             else
-
                 return Json(new
                 {
                     success = true,
-                    message = "Delete method called successfully"
+                    message = "Delete method called successfully :)"
                 });
         }
 

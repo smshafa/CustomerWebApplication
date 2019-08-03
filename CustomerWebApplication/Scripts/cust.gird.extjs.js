@@ -363,7 +363,8 @@ Ext.onReady(function () {
         collapsible: true,
         region: 'center',
         //region: 'west',
-        region: 'east',
+        autoHeight: true,
+        //region: 'east',
         split: true,
         // if you want to the grid fit to the page's width, delete this property.
         //width: 700,
@@ -517,7 +518,7 @@ Ext.onReady(function () {
         }],
         dockedItems: [{
             xtype: 'toolbar',
-            style: 'margin-top: 20px',
+            //style: 'margin-top: 20px',
             items: [{
                 text: 'اضافه کردن',
                 iconCls: 'icon-add',
@@ -568,25 +569,24 @@ Ext.onReady(function () {
     grid.getSelectionModel().on('selectionchange', function (selModel, selections) {
         grid.down('#delete').setDisabled(selections.length === 0);
     });   
+    
 
-
-    var tree = Ext.create('Ext.tree.Panel', {
-        collapsible: true,
-        region: 'west',
-        rootVisible: false,
-        store: store,
-        title: 'Book Details Tree',
-        width: 200
-    });
-
-
+    //var tree = Ext.create('Ext.tree.Panel', {
+    //    collapsible: true,
+    //    region: 'west',
+    //    rootVisible: false,
+    //    store: store,
+    //    title: 'Book Details Tree',
+    //    width: 200
+    //});
+    
 
     Ext.create('Ext.container.Viewport',
         {
+            //el: 'Form1',
             //autoScroll: true,
             scrollable: true,
-            //layout: 'border',
-            //xtype: 'panel', // This your UserGrid
+            //layout: 'border',            
             renderTo: Ext.getBody(),
             //margin: '100 100 100 100',
             layout: 'fit',
@@ -597,10 +597,19 @@ Ext.onReady(function () {
             //    scrollable: true,
             //    html: grid
             //}]
-            items: [grid, tree]
+            items: [
+                {
+                    //el: 'ID_OF_MY_FORM_INSIDE_BODY',  // instead of body
+                    xtype: 'container', 
+                    layout: 'border', 
+                    margin: '50 0 0 0',
+                    items: [grid]
+                }
+            ]
         }
     );
 
+    //alert(Ext.getBody().getSize().height);
     //// *** it works: *********
     //Ext.create('Ext.container.Viewport',
     //    {

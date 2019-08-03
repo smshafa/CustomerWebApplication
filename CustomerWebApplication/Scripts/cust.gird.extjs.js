@@ -593,10 +593,12 @@ Ext.onReady(function () {
             //region: 'center',
             rtl: true,
             title: 'East Panel',
+            padding: '0 0 40 0',
             //items: [{
             //    scrollable: true,
             //    html: grid
             //}]
+            //https://www.sencha.com/forum/showthread.php?37138-Viewport-inside-form-element-insted-of-body-element/page2&s=d6724e0b89e282d745e196985bec8a5c
             items: [
                 {
                     //el: 'ID_OF_MY_FORM_INSIDE_BODY',  // instead of body

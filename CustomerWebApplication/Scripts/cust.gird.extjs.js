@@ -319,9 +319,11 @@ Ext.onReady(function () {
     var grid = Ext.create('Ext.grid.Panel', {
         renderTo: document.body,
         plugins: {
+            //https://docs.sencha.com/extjs/6.0.1/classic/Ext.grid.plugin.RowEditing.html#cfg-errorSummary
             rowediting: {
                 clicksToEdit: 1,
                 clicksToMoveEditor: 1,
+                errorSummary: true,
                 listeners: {
                     cancelEdit: function (rowEditing, context) {
                         // Canceling editing of a locally added, unsaved record: remove it
@@ -329,14 +331,29 @@ Ext.onReady(function () {
                             store.remove(context.record);
                         }
                     },
-                    edit: function(editor, e) {
+                    edit: function (editor, e) {                        
                         // commit the changes right after editing finished                        
                         e.record.commit();
                         store.add(e);
-                        alert('hi');
-
+                        //alert('edit event::);
+                                              
                         grid.store.reload();                        
+                    },
+                    validateedit(editor, context, eOpts) {
+                        //https://docs.sencha.com/extjs/6.0.1/classic/Ext.grid.plugin.RowEditing.html#method-cancelEdit
+                        //var currentRec = context.record.data;
+                        ////alert(currentRec.FirstName);
+                        //var patt = /[0-9]/g;
+                        //var result = currentRec.FirstName.match(patt);
+                        ////console.log(result);
+                        //if (result != null) {
+                        //    metaData.innerCls = 'invalidCell';
+                        //    metaData.tdAttr = 'data-qtip="Name must not contain t"';
+                            //store.remove(e.record);
+                            //retrun false;
+                        //}                        
                     }
+
                 }
             }
         },
@@ -353,8 +370,9 @@ Ext.onReady(function () {
         autoScroll: true,
         scrollable: true,
         collapsible: true,
-        //region: 'east',
-        region: 'west',
+        region: 'center',
+        //region: 'west',
+        region: 'east',
         split: true,
         // if you want to the grid fit to the page's width, delete this property.
         //width: 700,
@@ -384,10 +402,10 @@ Ext.onReady(function () {
                 //console.log(arguments);                
                 var patt = /[0-9]/g;
                 var result = value.match(patt);
-                console.log(result);
+                //console.log(result);
                 if (result != null) {
                     metaData.innerCls = 'invalidCell';
-                    metaData.tdAttr = 'data-qtip="Name must not containe t"';
+                    metaData.tdAttr = 'data-qtip="Name must not contain t"';
                 }                
                 return value;
             },
@@ -567,15 +585,16 @@ Ext.onReady(function () {
             renderTo: Ext.getBody(),
             //margin: '100 100 100 100',
             layout: 'fit',
-            region: 'center',           
+            //region: 'center',
             rtl: true,
-            title: 'East Panel',           
-            items: [{
-                scrollable: true,
-                html: grid
-            }]
+            title: 'East Panel',
+            //items: [{
+            //    scrollable: true,
+            //    html: grid
+            //}]
+            items: [grid, tree]
         }
-    )
+    );
 
     //// *** it works: *********
     //Ext.create('Ext.container.Viewport',

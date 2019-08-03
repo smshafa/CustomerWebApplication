@@ -117,7 +117,8 @@ Ext.onReady(function () {
                     //Ext.example.msg(name, Ext.String.format("مشتری {1} اضافه گردید.", verb, record.getId()));
                 }
                 if (name == 'Update') {
-                    alert('update');                    
+                    alert('update');       
+                    grid.store.reload();        
                     //Ext.example.msg(name, Ext.String.format("مشتری {1} بروز گردید.", verb, record.getId()));
                 }
 
@@ -334,25 +335,15 @@ Ext.onReady(function () {
                     edit: function (editor, e) {                        
                         // commit the changes right after editing finished                        
                         e.record.commit();
-                        store.add(e);
-                        //alert('edit event::);
+                        store.add(e);                        
                                               
                         grid.store.reload();                        
-                    },
-                    validateedit(editor, context, eOpts) {
+                    }//,
+                    //validateedit(editor, context, eOpts) {
                         //https://docs.sencha.com/extjs/6.0.1/classic/Ext.grid.plugin.RowEditing.html#method-cancelEdit
                         //var currentRec = context.record.data;
-                        ////alert(currentRec.FirstName);
-                        //var patt = /[0-9]/g;
-                        //var result = currentRec.FirstName.match(patt);
-                        ////console.log(result);
-                        //if (result != null) {
-                        //    metaData.innerCls = 'invalidCell';
-                        //    metaData.tdAttr = 'data-qtip="Name must not contain t"';
-                            //store.remove(e.record);
-                            //retrun false;
-                        //}                        
-                    }
+                        ////alert(currentRec.FirstName);                                           
+                    //}
 
                 }
             }
@@ -389,37 +380,51 @@ Ext.onReady(function () {
             width: 50,
             sortable: true,
             dataIndex: 'CustomerID',
-            renderer: function (v, meta, rec) {                
+            renderer: function (v, meta, rec) {
                 return rec.phantom ? '' : v;
             }
         }, {
-            header: 'نام',
-            width: 220,
-            sortable: true,
-            dataIndex: 'FirstName',
-            // Hier you can put make your validation
-            renderer: function (value, metaData) {
-                //console.log(arguments);                
-                var patt = /[0-9]/g;
-                var result = value.match(patt);
-                //console.log(result);
-                if (result != null) {
-                    metaData.innerCls = 'invalidCell';
-                    metaData.tdAttr = 'data-qtip="Name must not contain t"';
-                }                
-                return value;
-            },
-            field: {
-                xtype: 'textfield'
-            }
-        }, {
-            text: 'نام خانوادگی',
-            width: 220,
-            sortable: true,
-            dataIndex: 'LastName',
-            field: {
-                xtype: 'textfield'
-            }
+                header: 'نام',
+                width: 220,
+                sortable: true,
+                dataIndex: 'FirstName',
+                // Hier you can put make your validation
+                //renderer: function (value, metaData) {
+                //    //console.log(arguments);                
+                //    var patt = /[0-9]/g;
+                //    var result = value.match(patt);
+                //    //console.log(result);
+                //    if (result != null) {
+                //        metaData.innerCls = 'invalidCell';
+                //        metaData.tdAttr = 'data-qtip="لطفا از ورود عدد در ورودی نام خودداری فرمایید."';
+                //    }
+                //    return value;
+                //},
+                field: {
+                    xtype: 'textfield'
+                }
+            }, {
+                text: 'نام خانوادگی',
+                width: 220,
+                sortable: true,
+                dataIndex: 'LastName',
+                //field: {
+                //    xtype: 'textfield'
+                //},
+                editor: {
+                    xtype: 'textfield',
+                    allowBlank: false,
+                    validator: function (value) {
+                        //return (value > 5 && value < 100) || 'Number must be > 5 and < 100';
+                        
+                        var patt = /[0-9]/g;
+                        var result = value.match(patt);                        
+                        if (result != null) {                           
+                            return 'لطفا اعداد در نام خانوادگی وارد نکنید.';
+                        }
+                        return true;
+                    }
+                }
                 //}, {
                 //    text: 'City',
                 //    width: 120,

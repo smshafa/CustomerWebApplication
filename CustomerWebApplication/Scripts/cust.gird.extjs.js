@@ -31,15 +31,24 @@ Ext.define('Customer', {
         type: 'int',
         //useNull: true
     }, 'FirstName', 'LastName', 'CityName', 'ProvinceName'],
-    validations: [ {
+    validations: [{
         type: 'length',
         field: 'FirstName',
-        min: 1
-    }, {
+        min: 1,
+        max: 60
+    }
+        , {
         type: 'length',
         field: 'LastName',
-        min: 1
-    }]
+        min: 1,
+        max: 60
+    }
+        , {
+        type: 'notnull',
+        field: 'FirstName',
+        message: 'not null'
+    }
+    ]
 });
 
 
@@ -104,29 +113,27 @@ Ext.onReady(function () {
                 Ext.example.msg(name, Ext.String.format("{0} customer: {1}", verb, record.getId()));
 
                 if (name == 'Create') {
-                    alert('Created.');                    
-                    //store.reload.refresh();
+                    alert('Created.'); 
+                    //Ext.example.msg(name, Ext.String.format("مشتری {1} اضافه گردید.", verb, record.getId()));
                 }
                 if (name == 'Update') {
-                    alert('update');
-                    //store.reload();
-                    //grid.store.reload();
+                    alert('update');                    
+                    //Ext.example.msg(name, Ext.String.format("مشتری {1} بروز گردید.", verb, record.getId()));
                 }
 
             }
         }
     });
 
-
     Ext.define('ProvinceModel', {
         extend: 'Ext.data.Model',
         fields: [{
-                name: 'ProvinceID',
-                type: 'int'
-            }, {
-                name: 'ProvinceName',
-                type: 'string'
-            },
+            name: 'ProvinceID',
+            type: 'int'
+        }, {
+            name: 'ProvinceName',
+            type: 'string'
+        },
 
         ]
     });
@@ -146,10 +153,10 @@ Ext.onReady(function () {
                 rootProperty: 'data'
             }
         },
-        
+
     });
 
-    
+
 
     // The data store containing the list of states
     // static mode
@@ -223,15 +230,100 @@ Ext.onReady(function () {
             }
         }
     });
-    
+
 
     //myGrid.store.reload();
     //myGrid.getView().refresh();
 
+    //myGrid.store.reload();
+    //myGrid.getView().refresh();
+
+    //https://docs.sencha.com/extjs/6.0.2/classic/Ext.plugin.Viewport.html
+    //Ext.create('Ext.container.Viewport', {
+    //    layout: 'fit', // full the viewport with the tab panel
+
+    //    items: [{
+    //        xtype: 'panel'//,
+    //        items: [{
+    //            ...
+    //     }]
+    //    }]
+    //});
+
+    //Ext.create('Ext.tab.Panel', {
+    //    plugins: 'viewport',
+
+    //    items: [{
+    //        ...
+    // }]
+    //});
+
+
+
+    //https://docs.sencha.com/extjs/6.0.2/classic/Ext.container.Viewport.html
+    //Ext.create('Ext.container.Viewport', {
+    //    layout: 'border',
+    //    renderTo: Ext.getBody(),
+    //    rtl: true,
+    //    items: [
+            //{
+            //    region: 'north',
+            //    html: '<h1 class="x-panel-header">Page Title</h1>',
+            //    border: false,
+            //    margin: '0 0 5 0'
+            //}//, {
+            //    region: 'west',
+            //    collapsible: true,
+            //    title: 'Navigation',
+            //    width: 150
+            //    // could use a TreePanel or AccordionLayout for navigational items
+            //}, {
+            //    region: 'south',
+            //    title: 'South Panel',
+            //    collapsible: true,
+            //    html: 'Information goes here',
+            //    split: true,
+            //    height: 100,
+            //    minHeight: 100
+            //}, {
+            //    region: 'east',
+            //    title: 'East Panel',
+            //    collapsible: true,
+            //    split: true,
+            //    width: 150
+            //},
+            //,{
+            //    region: 'center',
+            //    xtype: 'tabpanel', // TabPanel itself has no title
+            //    activeTab: 0,      // First tab active by default
+            //    items: {
+            //        title: 'Default Tab',
+            //        //html: 'The first tab\'s content. Others may be added dynamically'
+            //    }
+            //}
+
+
+    //        {
+    //            region: 'center',
+    //            border: false,
+    //            layout: 'fit'               
+    //        }
+    //    ]
+    //});
+
+
+    
+
+    
+
     var grid = Ext.create('Ext.grid.Panel', {
         renderTo: document.body,
         plugins: {
+            //https://docs.sencha.com/extjs/6.0.1/classic/Ext.grid.plugin.RowEditing.html#cfg-errorSummary
             rowediting: {
+                clicksToEdit: 1,
+                clicksToMoveEditor: 1,
+                errorSummary: true,
                 listeners: {
                     cancelEdit: function (rowEditing, context) {
                         // Canceling editing of a locally added, unsaved record: remove it
@@ -239,29 +331,57 @@ Ext.onReady(function () {
                             store.remove(context.record);
                         }
                     },
-                    edit: function(editor, e) {
+                    edit: function (editor, e) {                        
                         // commit the changes right after editing finished                        
                         e.record.commit();
                         store.add(e);
-                        alert('hi');
-
-                        grid.store.reload();
-                        //Ext.getCmp('crud-grid').getView().refresh();
-                        //grid.getView().refresh();                        
-
-                        //this.store.refresh();
-                        //this.getView().refresh();
-                        //grid.getView().refresh();
+                        //alert('edit event::);
+                                              
+                        grid.store.reload();                        
+                    },
+                    validateedit(editor, context, eOpts) {
+                        //https://docs.sencha.com/extjs/6.0.1/classic/Ext.grid.plugin.RowEditing.html#method-cancelEdit
+                        //var currentRec = context.record.data;
+                        ////alert(currentRec.FirstName);
+                        //var patt = /[0-9]/g;
+                        //var result = currentRec.FirstName.match(patt);
+                        ////console.log(result);
+                        //if (result != null) {
+                        //    metaData.innerCls = 'invalidCell';
+                        //    metaData.tdAttr = 'data-qtip="Name must not contain t"';
+                            //store.remove(e.record);
+                            //retrun false;
+                        //}                        
                     }
+
                 }
             }
         },
-        width: 800,
-        height: 330,
-        renderTo: 'crud-grid',
-        style: 'margin-top: 10px',
+        // *** if viewport doesn't need, set width and height:
+        //width: 800,
+        //height: 330,
+
+        //plugins: 'viewport', // add this component to the viewport container.
+
+        // *** if viewport doesn't need, set which container of html page should keep the grid:
+        //renderTo: 'crud-grid',
+
+        // ******configuration of  view-port: https://www.sencha.com/forum/showthread.php?163309-Ext-js-4-Viewport-implementation
+        autoScroll: true,
+        scrollable: true,
+        collapsible: true,
+        region: 'center',
+        //region: 'west',
+        region: 'east',
+        split: true,
+        // if you want to the grid fit to the page's width, delete this property.
+        //width: 700,
+        rtl: true,
+        //**********
+        
+        //style: 'margin-top: 10px',
         frame: true,
-        title: 'Customers',
+        title: 'مشتریان',
         store: store,
         iconCls: 'icon-user',
         columns: [{
@@ -273,16 +393,28 @@ Ext.onReady(function () {
                 return rec.phantom ? '' : v;
             }
         }, {
-            header: 'First Name',
-            width: 120,
+            header: 'نام',
+            width: 220,
             sortable: true,
             dataIndex: 'FirstName',
+            // Hier you can put make your validation
+            renderer: function (value, metaData) {
+                //console.log(arguments);                
+                var patt = /[0-9]/g;
+                var result = value.match(patt);
+                //console.log(result);
+                if (result != null) {
+                    metaData.innerCls = 'invalidCell';
+                    metaData.tdAttr = 'data-qtip="Name must not contain t"';
+                }                
+                return value;
+            },
             field: {
                 xtype: 'textfield'
             }
         }, {
-            text: 'Last Name',
-            width: 120,
+            text: 'نام خانوادگی',
+            width: 220,
             sortable: true,
             dataIndex: 'LastName',
             field: {
@@ -297,7 +429,7 @@ Ext.onReady(function () {
                 //        xtype: 'textfield'
                 //    }
             }, {
-                header: 'Province',
+                header: 'استان',
                 dataIndex: 'ProvinceName',
                 editor: {
                     xtype: 'combobox',
@@ -319,7 +451,7 @@ Ext.onReady(function () {
                             //var index = this.getStore().indexOf(record);
 
                             //alert(combo.getValue());
- 
+
                             cityStore.load({
                                 params: { 'province': combo.getValue() }
                             });
@@ -329,7 +461,7 @@ Ext.onReady(function () {
                     //triggerAction: 'all'
                 }
             }, {
-                header: 'City',
+                header: 'شهر',
                 dataIndex: 'CityName',
                 editor: {
                     xtype: 'combobox',
@@ -365,8 +497,8 @@ Ext.onReady(function () {
                     //        }
                     //    }
                     //}
-                
-                
+
+
 
                 }
         //}, {
@@ -380,8 +512,9 @@ Ext.onReady(function () {
         }],
         dockedItems: [{
             xtype: 'toolbar',
+            style: 'margin-top: 20px',
             items: [{
-                text: 'Add',
+                text: 'اضافه کردن',
                 iconCls: 'icon-add',
                 handler: function () {
                     // empty record
@@ -402,7 +535,7 @@ Ext.onReady(function () {
                 }
             }, '-', {
                 itemId: 'delete',
-                text: 'Delete',
+                text: 'حذف',
                 iconCls: 'icon-delete',
                 disabled: true,
                 handler: function () {
@@ -413,13 +546,14 @@ Ext.onReady(function () {
                 }
                 }, '-', {
                     itemId: 'refresh',
-                    text: 'Refresh',
+                    text: 'تازه‌سازی',
                     iconCls: 'icon-delete',
                     disabled: false,
                     handler: function () {
-                        grid.store.refresh();
-                        grid.getView().getSelectionModel().selectRow(0);
-                        grid.getView().reload();
+                        grid.store.reload();
+                        //grid.store.refresh();
+                        //grid.getView().getSelectionModel().selectRow(0);
+                        //grid.getView().reload();
 
                     }
                 }
@@ -428,10 +562,93 @@ Ext.onReady(function () {
     });
     grid.getSelectionModel().on('selectionchange', function (selModel, selections) {
         grid.down('#delete').setDisabled(selections.length === 0);
+    });   
+
+
+    var tree = Ext.create('Ext.tree.Panel', {
+        collapsible: true,
+        region: 'west',
+        rootVisible: false,
+        store: store,
+        title: 'Book Details Tree',
+        width: 200
     });
+
+
+
+    Ext.create('Ext.container.Viewport',
+        {
+            //autoScroll: true,
+            scrollable: true,
+            //layout: 'border',
+            //xtype: 'panel', // This your UserGrid
+            renderTo: Ext.getBody(),
+            //margin: '100 100 100 100',
+            layout: 'fit',
+            //region: 'center',
+            rtl: true,
+            title: 'East Panel',
+            //items: [{
+            //    scrollable: true,
+            //    html: grid
+            //}]
+            items: [grid, tree]
+        }
+    );
+
+    //// *** it works: *********
+    //Ext.create('Ext.container.Viewport',
+    //    {
+    //        layout: 'border',
+    //        renderTo: Ext.getBody(),
+    //        rtl: true,
+    //        //items: [tree, grid]
+    //        items: [grid]
+    //    }
+    //);
+
+
+    //Ext.create('Ext.container.Viewport',
+    //    {
+    //        layout: 'border',
+    //        renderTo: Ext.getBody(),
+    //        rtl: true,
+    //        items:
+    //            [
+    //                {
+    //                    grid,
+    //                    //layout: 'border',
+    //                    //xtype: 'panel', // This your UserGrid
+    //                    //renderTo: Ext.getBody(),
+    //                    //margin: '100 100 100 100',
+    //                    //layout: 'fit',
+    //                    region: 'center',
+    //                    //html: "<div id='crud-grid'></div>",
+    //                    rtl: true,
+    //                    title: 'East Panel',
+    //                    //html: "hello I am a bunch of text"
+    //                    //html: grid,//'<h1 class="x-panel-header">Page Title</h1>',
+    //                    border: false,
+    //                },
+    //                , {
+    //                    region: 'west',
+    //                    collapsible: true,
+    //                    title: 'Navigation',
+    //                    width: 150,
+    //                    html: 'jsdfkjssdfjksdjfk'
+    //                    // could use a TreePanel or AccordionLayout for navigational items
+    //                }
+    //            ]
+    //    }
+    //);
+
+    //var rowEditing = grid.findPlugin('rowediting');
+    //rowEditing.startEdit(0, 0);
 });
 
 
+
+//****** sample(asus) these blew code does not related to the work. they are jsut sample code.
 //https://fiddle.sencha.com/#fiddle/ob5&view/editor
 //https://fiddle.sencha.com/#fiddle/s5f&view/editor
  //   https://fiddle.sencha.com/#view/editor&fiddle/2f6d

@@ -17,10 +17,44 @@
 
         <link rel="stylesheet" type="text/css" href="~/shared/examples.css" />
 
+        @*Uses static and rtl theme.*@
+        <link rel="stylesheet" type="text/css" href="~/build/classic/theme-neptune/resources/theme-neptune-all-rtl.css">
+        <script type="text/javascript" src="~/build/ext-all-rtl.js"></script>
+        <script>
+
+            //Ext.application({
+            //    name: 'MyApp',
+            //    launch: function () {
+                   
+            //        Ext.create('Ext.container.Viewport',
+            //            {
+            //                //autoScroll: true,
+            //                scrollable: true,
+            //                //layout: 'border',
+            //                //xtype: 'panel', // This your UserGrid
+            //                renderTo: Ext.getBody(),
+            //                //margin: '100 100 100 100',
+            //                layout: 'fit',
+            //                region: 'center',
+            //                //html: "<div id='crud-grid'></div>",
+            //                rtl: true,
+            //                title: 'East Panel',
+            //                //html: "hello I am a bunch of text"                            
+            //            }
+            //        )
+            //    }
+            //});
+
+                  
+
+        </script>
 
         <style type="text/css">
-
-
+         
+            .invalidCell {
+                background-color: red
+            }
+        
             .icon-user-add {
                 background-image: url(~/shared/icons/fam/add.gif) !important;
             }
@@ -45,6 +79,6 @@
 
 <h2>Index</h2>
 
-<div id="crud-grid" style="margin-top:60px;width:100%;">
+@*<div id="crud-grid" style="margin-top:200px;width:100%;">*@
 
-</div>
+@*</div>*@

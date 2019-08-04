@@ -380,12 +380,12 @@ Ext.onReady(function () {
     
 
     var grid = Ext.create('Ext.grid.Panel', {
-        renderTo: document.body,
+        //renderTo: document.body,  //  which container is charge of keeping this component.
         plugins: {
             //https://docs.sencha.com/extjs/6.0.1/classic/Ext.grid.plugin.RowEditing.html#cfg-errorSummary
             rowediting: {
-                clicksToEdit: 1,
-                clicksToMoveEditor: 1,
+                clicksToEdit: 2,
+                clicksToMoveEditor: 2,
                 errorSummary: true,
                 listeners: {
                     cancelEdit: function (rowEditing, context) {
@@ -498,6 +498,7 @@ Ext.onReady(function () {
                 //    }
             }, {
                 header: 'استان',
+                width: 220,
                 dataIndex: 'ProvinceName',
                 editor: {
                     xtype: 'combobox',
@@ -531,6 +532,7 @@ Ext.onReady(function () {
             }, {
                 header: 'شهر',
                 dataIndex: 'CityName',
+                width: 220,
                 editor: {
                     xtype: 'combobox',
                     //store: city, // It is a function***
@@ -583,7 +585,8 @@ Ext.onReady(function () {
             //style: 'margin-top: 20px',
             items: [{
                 text: 'اضافه کردن',
-                iconCls: 'icon-add',
+                //iconCls: 'icon-user-add',//'icon-add',
+                //style: 'class:\'.icon-user-add\'',
                 handler: function () {
                     // empty record
                     var rec = new Customer();

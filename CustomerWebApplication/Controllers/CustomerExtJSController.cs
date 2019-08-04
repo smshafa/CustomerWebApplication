@@ -24,24 +24,6 @@ namespace CustomerWebApplication.Controllers
         }
 
 
-        public Task<HttpResponseMessage> CallGetIDApi()
-        {
-            // Arrange
-            Task<HttpResponseMessage> response;
-
-            HttpClient client = new HttpClient();
-
-            client.BaseAddress = new Uri("https://localhost:44311/");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            // New code:
-            response = client.GetAsync("api/customers/");
-
-            return response;
-        }
-
-
         public JsonResult Load()
         {
 

@@ -94,11 +94,7 @@ namespace UnitTestCustomerProject
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
             // New code:
-            response = client.GetAsync("api/customers/1");
-            response.Wait();
-
-
-
+            response = client.GetAsync("api/customers/1");            
             //}
             return response;
         }

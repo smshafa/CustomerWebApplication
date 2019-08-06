@@ -21,31 +21,31 @@
         <link rel="stylesheet" type="text/css" href="~/build/classic/theme-neptune/resources/theme-neptune-all-rtl.css">
         <script type="text/javascript" src="~/build/ext-all-rtl.js"></script>
 
-        
+
         <script>
 
-                    //Ext.application({
-                    //    name: 'MyApp',
-                    //    launch: function () {
+                        //Ext.application({
+                        //    name: 'MyApp',
+                        //    launch: function () {
 
-                    //        Ext.create('Ext.container.Viewport',
-                    //            {
-                    //                //autoScroll: true,
-                    //                scrollable: true,
-                    //                //layout: 'border',
-                    //                //xtype: 'panel', // This your UserGrid
-                    //                renderTo: Ext.getBody(),
-                    //                //margin: '100 100 100 100',
-                    //                layout: 'fit',
-                    //                region: 'center',
-                    //                //html: "<div id='crud-grid'></div>",
-                    //                rtl: true,
-                    //                title: 'East Panel',
-                    //                //html: "hello I am a bunch of text"
-                    //            }
-                    //        )
-                    //    }
-                    //});
+                        //        Ext.create('Ext.container.Viewport',
+                        //            {
+                        //                //autoScroll: true,
+                        //                scrollable: true,
+                        //                //layout: 'border',
+                        //                //xtype: 'panel', // This your UserGrid
+                        //                renderTo: Ext.getBody(),
+                        //                //margin: '100 100 100 100',
+                        //                layout: 'fit',
+                        //                region: 'center',
+                        //                //html: "<div id='crud-grid'></div>",
+                        //                rtl: true,
+                        //                title: 'East Panel',
+                        //                //html: "hello I am a bunch of text"
+                        //            }
+                        //        )
+                        //    }
+                        //});
 
 
 
@@ -76,7 +76,15 @@
 
         <script type="text/javascript" src="~/shared/examples.js"></script>
         @*<script type="text/javascript" src="~/Scripts/test-extjs.js"></script>*@
-        <script type="text/javascript" src="~/Scripts/cust.gird.extjs.js"></script>
+        @*<script type="text/javascript" src="~/Scripts/cust.gird.extjs.js"></script>*@
+
+
+        @*<script type="text/javascript" src="~/Views/CustomerExtJS/CustomerView.js"></script>*@
+        @*Priority of script loading is important*@
+
+        @Scripts.Render("~/Scripts/Models/customer.model.js")
+        @Scripts.Render("~/Scripts/ViewModels/customer.view-model.js")
+        @Scripts.Render("~/Scripts/Views/customer.view.js")
     </head>
 
 <h2>Index</h2>

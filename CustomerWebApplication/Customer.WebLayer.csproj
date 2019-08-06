@@ -11369,6 +11369,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Scripts\Models\customer.model.js" />
     <Content Include="packages\amf\.sencha\test\Ext.cmd.api.adapter.js" />
     <Content Include="packages\amf\.sencha\test\jasmine.js" />
     <Content Include="packages\amf\.sencha\test\test-impl.xml" />
@@ -13269,6 +13270,7 @@
     <Content Include="resources\ext-watermark\style.css" />
     <Content Include="Scripts\cust.gird.extjs.js" />
     <Content Include="Scripts\customer.ext.js" />
+    <Content Include="Scripts\Views\customer.view.js" />
     <Content Include="shared\examples.css" />
     <Content Include="shared\examples.js" />
     <Content Include="shared\extjs\App.js" />
@@ -14894,6 +14896,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\test-extjs.js" />
+    <Content Include="Scripts\ViewModels\customer.view-model.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -14918,6 +14921,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="FrontModels\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>

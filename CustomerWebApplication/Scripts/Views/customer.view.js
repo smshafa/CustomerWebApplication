@@ -171,7 +171,13 @@ Ext.onReady(function () {
 
 
                     var rowEditing = grid.findPlugin('rowediting');
-                    store.insert(0, rec);
+
+                    // For Ext.data.Store
+                    //store.insert(0, rec);
+
+                    // For Ext.app.ViewModel
+                    grid.store.insert(0, rec);
+
                     rowEditing.startEdit(rec, 0);
                 }
             }, '-', {
@@ -182,7 +188,12 @@ Ext.onReady(function () {
                 handler: function () {
                     var selection = grid.getView().getSelectionModel().getSelection()[0];
                     if (selection) {
-                        store.remove(selection);
+
+                        // For Ext.data.Store
+                        //store.remove(selection);
+
+                        // For Ext.app.ViewModel
+                        grid.store.remove(selection);
                     }
                 }
             }, '-', {

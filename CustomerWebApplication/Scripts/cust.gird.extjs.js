@@ -23,45 +23,70 @@
 //});
 
 //Asus
-Ext.define('Customer',
-    {
-        extend: 'Ext.data.Model',
-        idProperty: 'customerId',
-        fields: [
-            {
-                name: 'CustomerID',
-                type: 'int',
-                //useNull: true
-            }, 'FirstName', 'LastName', 'CityName', 'ProvinceName'
-        ],
-        validations: [
-            //{
-            //    type: 'length',
-            //    field: 'FirstName',
-            //    min: 1,
-            //    max: 60
-            //}, {
-            {
-                type: 'length',
-                field: 'LastName',
-                min: 1,
-                max: 60
-            }, {
-                type: 'notnull',
-                field: 'FirstName',
-                message: 'not null'
-            }
-        ]
-    });
+Ext.define('Customer', {
+    extend: 'Ext.data.Model',
+    idProperty: 'customerId',
+    fields: [{
+        name: 'CustomerID',
+        type: 'int',
+        //useNull: true
+    }, 'FirstName', 'LastName', 'CityName', 'ProvinceName'],
+    validations: [
+    //    {
+    //    type: 'length',
+    //    field: 'FirstName',
+    //    min: 1,
+    //    max: 60
+    //},
+        {
+        type: 'length',
+        field: 'LastName',
+        min: 1,
+        max: 60
+    }
+    //    , {
+    //    type: 'notnull',
+    //    field: 'FirstName',
+    //    message: 'not null'
+    //}
+    ]
+});
 
+//function requestMessageProcessor(proxy, response) {
+//    if (response && proxy) {
+//        try {
+//            var responseData = proxy.reader.getResponseData(response);
+
+//            if (responseData.message) {
+//                var messageDescription = 'Information'; // title of the alert box
+//                var messageIcon = Ext.MessageBox.INFO;
+
+//                if (!responseData.success) {
+//                    var messageDescription = 'Error';
+//                    var messageIcon = Ext.MessageBox.ERROR;
+//                }
+
+//                Ext.MessageBox.show({
+//                    title: messageDescription,
+//                    msg: responseData.message,
+//                    buttons: Ext.MessageBox.OK,
+//                    icon: messageIcon
+//                });
+//            }
+//        }
+//        catch (err) {
+//            // Malformed response most likely
+//            console.log(err);
+//        }
+//    }
+//}
 
 Ext.onReady(function () {
 
-    var store = Ext.create('Ext.data.Store', {        
+    var store = Ext.create('Ext.data.Store', {
         autoLoad: true,
         autoSync: true,
         model: 'Customer',
-        
         //proxy: {
         //    type: 'rest',
         //    url: '/CustomerExtJS/Load',
@@ -95,37 +120,51 @@ Ext.onReady(function () {
             writer: {
                 type: 'json',   //which data type server will be worked
                 writeAllFields: true,   //true to write all fields from the record to the server. If set to false it will only send the fields that were modified.
-                root: 'data',                
-                encode: true,                
+                root: 'data',
+                encode: true,
                 rootProperty: 'data',
-                writeRecordId: false, //By default, each record's id is always included in the output for non-phantom records since in most cases the id will be required on the server to process th
-                successProperty: 'success',
-                messageProperty: 'message'
+                writeRecordId: false //By default, each record's id is always included in the output for non-phantom records since in most cases the id will be required on the server to process th
             }
+
+        
         },      
         listeners: {
-            load: function(store, record, success, opts) {
-                var response_text = store.proxy.reader.rawData;
-                console.log(response_text);
-                var data = Ext.JSON.decode(action.response.responseText);
-                alert(response_text);
-                //alert(success);
-            },
-            // not work
-            //load: function (records, operation, success) {
-            //    if (success) {
-            //        console.log("Category: " + category.get('name'));
-            //        alert('s');
-            //    } else {
-            //        console.log('error');
-            //        alert('f');
+            //exception: function (reader, response, error, eOpts) {
+            //    var respObj = Ext.decode(response.responseText);
+            //    if (respObj.success === false) {
+            //        console.log(respObj.error);
+            //        alert(respObj.error);
             //    }
             //},
-            write: function (records, operation, success) {
+
+            //exception: function (proxy, response, options) {
+            //    requestMessageProcessor(proxy, response);
+            //},
+            
+            //afterRequest: function (request, success) {
+            //    requestMessageProcessor(request.scope, request.operation.response);
+            //},
+
+
+            write: function (store, operation) {
                 var record = operation.getRecords()[0],
                     name = Ext.String.capitalize(operation.action),
                     verb;
 
+
+                //alert('before');
+                //alert(operation._response.responseText);
+                //alert('after');
+
+                var myResponse = JSON.parse(operation._response.responseText);
+                //alert(myResponse.status);
+                if (myResponse.status == 202) { 
+                    Ext.example.msg(name, Ext.String.format(myResponse.message));
+                }
+
+                //if (operation._response.status == 200) {
+                //    alert("ok");
+                //}
 
                 //if (name == 'Destroy') {
                 if (name == 'Delete') {
@@ -136,49 +175,16 @@ Ext.onReady(function () {
                 Ext.example.msg(name, Ext.String.format("{0} customer: {1}", verb, record.getId()));
 
                 if (name == 'Create') {
-                    alert('Created.');
-                    a
+                    alert('Created.'); 
                     //Ext.example.msg(name, Ext.String.format("مشتری {1} اضافه گردید.", verb, record.getId()));
                 }
                 if (name == 'Update') {
-                    alert('update');
-                    
-                    grid.store.reload();
+                    alert('update');       
+                    grid.store.reload();        
                     //Ext.example.msg(name, Ext.String.format("مشتری {1} بروز گردید.", verb, record.getId()));
                 }
-                
-                //},
-                //load: function (store, records, successfull, eOpts) {
-                //    if (successfull) {
-                //        alert('success');
-                //    }
-                //}
+
             }
-            //, update: function (thisStore, record, operation) {
-            //    console.log('Update happened');
-            //    console.log(record);
-            //    console.log(operation);
-            //    alert('Update happened');
-            //    if (operation.wasSuccessful()) {
-            //        alert('Update dfd');
-            //    } else {
-            //        alert('Update dsfdsfd');
-            //    }
-            //},
-            //save: function () {
-            //    console.log('Save happened');
-            //    alert('Save happened');
-            //},
-            //exception: function (dataproxy, type, action, options, response, arg) {
-            //    alert('Error happened');
-            //    console.log('Error happened');
-            //    console.log(response);
-            //    doJSON(result.responseText);
-            //},
-            //remove: function () {
-            //    console.log("Record removed");
-            //    alert("Record removed");
-            //}
         }
     });
 
@@ -374,12 +380,12 @@ Ext.onReady(function () {
     
 
     var grid = Ext.create('Ext.grid.Panel', {
-        renderTo: document.body,
+        //renderTo: document.body,  //  which container is charge of keeping this component.
         plugins: {
             //https://docs.sencha.com/extjs/6.0.1/classic/Ext.grid.plugin.RowEditing.html#cfg-errorSummary
             rowediting: {
-                clicksToEdit: 1,
-                clicksToMoveEditor: 1,
+                clicksToEdit: 2,
+                clicksToMoveEditor: 2,
                 errorSummary: true,
                 listeners: {
                     cancelEdit: function (rowEditing, context) {
@@ -419,7 +425,8 @@ Ext.onReady(function () {
         collapsible: true,
         region: 'center',
         //region: 'west',
-        region: 'east',
+        autoHeight: true,
+        //region: 'east',
         split: true,
         // if you want to the grid fit to the page's width, delete this property.
         //width: 700,
@@ -491,6 +498,7 @@ Ext.onReady(function () {
                 //    }
             }, {
                 header: 'استان',
+                width: 220,
                 dataIndex: 'ProvinceName',
                 editor: {
                     xtype: 'combobox',
@@ -524,6 +532,7 @@ Ext.onReady(function () {
             }, {
                 header: 'شهر',
                 dataIndex: 'CityName',
+                width: 220,
                 editor: {
                     xtype: 'combobox',
                     //store: city, // It is a function***
@@ -573,10 +582,11 @@ Ext.onReady(function () {
         }],
         dockedItems: [{
             xtype: 'toolbar',
-            style: 'margin-top: 20px',
+            //style: 'margin-top: 20px',
             items: [{
                 text: 'اضافه کردن',
-                iconCls: 'icon-add',
+                //iconCls: 'icon-user-add',//'icon-add',
+                //style: 'class:\'.icon-user-add\'',
                 handler: function () {
                     // empty record
                     var rec = new Customer();
@@ -624,39 +634,49 @@ Ext.onReady(function () {
     grid.getSelectionModel().on('selectionchange', function (selModel, selections) {
         grid.down('#delete').setDisabled(selections.length === 0);
     });   
+    
 
-
-    var tree = Ext.create('Ext.tree.Panel', {
-        collapsible: true,
-        region: 'west',
-        rootVisible: false,
-        store: store,
-        title: 'Book Details Tree',
-        width: 200
-    });
-
-
+    //var tree = Ext.create('Ext.tree.Panel', {
+    //    collapsible: true,
+    //    region: 'west',
+    //    rootVisible: false,
+    //    store: store,
+    //    title: 'Book Details Tree',
+    //    width: 200
+    //});
+    
 
     Ext.create('Ext.container.Viewport',
         {
+            //el: 'Form1',
             //autoScroll: true,
             scrollable: true,
-            //layout: 'border',
-            //xtype: 'panel', // This your UserGrid
+            //layout: 'border',            
             renderTo: Ext.getBody(),
             //margin: '100 100 100 100',
             layout: 'fit',
             //region: 'center',
             rtl: true,
             title: 'East Panel',
+            padding: '0 0 40 0',
             //items: [{
             //    scrollable: true,
             //    html: grid
             //}]
-            items: [grid, tree]
+            //https://www.sencha.com/forum/showthread.php?37138-Viewport-inside-form-element-insted-of-body-element/page2&s=d6724e0b89e282d745e196985bec8a5c
+            items: [
+                {
+                    //el: 'ID_OF_MY_FORM_INSIDE_BODY',  // instead of body
+                    xtype: 'container', 
+                    layout: 'border', 
+                    margin: '50 0 0 0',
+                    items: [grid]
+                }
+            ]
         }
     );
 
+    //alert(Ext.getBody().getSize().height);
     //// *** it works: *********
     //Ext.create('Ext.container.Viewport',
     //    {

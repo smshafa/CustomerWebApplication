@@ -24,24 +24,6 @@ namespace CustomerWebApplication.Controllers
         }
 
 
-        public Task<HttpResponseMessage> CallGetIDApi()
-        {
-            // Arrange
-            Task<HttpResponseMessage> response;
-
-            HttpClient client = new HttpClient();
-
-            client.BaseAddress = new Uri("https://localhost:44311/");
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            // New code:
-            response = client.GetAsync("api/customers/");
-
-            return response;
-        }
-
-
         public JsonResult Load()
         {
 
@@ -65,15 +47,17 @@ namespace CustomerWebApplication.Controllers
                 {
                     data = customerViewModel,
                     success = true,
-                    message = "Loaded data is successful."
+                    message = "Loaded data is successful.",
+                    status = 200,
                 }, JsonRequestBehavior.AllowGet);
             }
 
             return Json(new
             {
                 data = customerViewModel,
-                success = false,
-                message = "Loaded data was failed."
+                //success = false,
+                message = "Loaded data was failed.",
+                status = 202,
             }, JsonRequestBehavior.AllowGet);
         }
 
@@ -91,10 +75,12 @@ namespace CustomerWebApplication.Controllers
             Helper.CustomerWebApiRepository customerWebApiRepository = new Helper.CustomerWebApiRepository();
             CustomerViewModel customerViewModel = JsonConvert.DeserializeObject<CustomerViewModel>(data);
 
+            // server validation
             if (string.IsNullOrEmpty(customerViewModel.FirstName))
             {
-                ModelState.AddModelError("Name", "Name is required");
+                ModelState.AddModelError("FirstName", "First Name is required");
             }
+
 
             if (ModelState.IsValid)
             {
@@ -104,21 +90,23 @@ namespace CustomerWebApplication.Controllers
                 if (response.Result.StatusCode != HttpStatusCode.Created)
                     return Json(new
                     {
-                        success = false,
-                        message = "Create method called unsuccessfully"
+                        //success = false,
+                        status = 202,
+                        message = "Create method called unsuccessfully! :("
                     });
                 else
                     return Json(new
                     {
+                        status = 200,
                         success = true,
-                        message = "Create method called successfully"
+                        message = "Create method called successfully :) _ First Name is required. "
                     });
             }
-
             return Json(new
             {
-                success = false,
-                message = "Create method called unsuccessfully"
+                //success = false,
+                status = 202,
+                message = "Create method called unsuccessfully :)  _ First Name is required. "
             });
         }
 
@@ -130,29 +118,37 @@ namespace CustomerWebApplication.Controllers
             Helper.CustomerWebApiRepository customerWebApiRepository = new Helper.CustomerWebApiRepository();
             CustomerViewModel customerViewModel = JsonConvert.DeserializeObject<CustomerViewModel>(data);
 
+            if (string.IsNullOrEmpty(customerViewModel.FirstName))
+            {
+                ModelState.AddModelError("FirstName", "First Name is required");
+            }
 
-            Task<HttpResponseMessage> response = customerWebApiRepository.Put(customerViewModel.CustomerID, customerViewModel);
-            response.Wait();
+            if (ModelState.IsValid)
+            {
+                Task<HttpResponseMessage> response = customerWebApiRepository.Put(customerViewModel.CustomerID, customerViewModel);
+                response.Wait();
 
-            if (response.Result.StatusCode != HttpStatusCode.OK)
-                return Json(new
-                {
-                    success = false,
-                    message = "Update method called unsuccessfully"
-                });
-            else
-
-                return Json(new
-                {
-                    success = true,
-                    message = "Update method called successfully"
-                });
-
-            //return Json(new
-            //{
-            //    success = true,
-            //    message = "Update method called successfully"
-            //});
+                if (response.Result.StatusCode != HttpStatusCode.OK)
+                    return Json(new
+                    {
+                        status = 202,
+                        //success = false,
+                        message = "Update method called unsuccessfully :( _ First Name is required. "
+                    });
+                else
+                    return Json(new
+                    {
+                        status = 200,
+                        success = true,
+                        message = "Update method called successfully"
+                    });
+            }
+            return Json(new
+            {
+                status = 202,
+                //success = false,
+                message = "Update method called unsuccessfully :( _ First Name is required. "
+            });
         }
 
         [HttpPost]
@@ -168,15 +164,16 @@ namespace CustomerWebApplication.Controllers
             if (response.Result.StatusCode != HttpStatusCode.OK)
                 return Json(new
                 {
-                    success = false,
-                    message = "Delete method called unsuccessfully"
+                    status = 202,
+                    //success = false,
+                    message = "Delete method called unsuccessfully :("
                 });
             else
-
                 return Json(new
                 {
+                    status = 200,
                     success = true,
-                    message = "Delete method called successfully"
+                    message = "Delete method called successfully :)"
                 });
         }
 
@@ -249,6 +246,12 @@ namespace CustomerWebApplication.Controllers
             }, JsonRequestBehavior.AllowGet);
         }
 
+
+        /// <summary>
+        /// Fill City Combo-Box
+        /// </summary>
+        /// <param name="province"></param>
+        /// <returns></returns>
         public JsonResult GetCity(string province)
         {
 
@@ -261,7 +264,7 @@ namespace CustomerWebApplication.Controllers
             var cityEnumerable =
                 from c in cities
                 where c.Province.ProvinceName == province
-                select new {c.CityID, c.CityName};
+                select new { c.CityID, c.CityName };
 
 
 
@@ -271,7 +274,7 @@ namespace CustomerWebApplication.Controllers
                 //total = 2,
                 data = cityEnumerable,
                 success = true,
-                message = "Loaded citiprovinceses data"
+                message = "Loaded cities data related to a province"
             }, JsonRequestBehavior.AllowGet);
         }
     }

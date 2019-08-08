@@ -62,7 +62,8 @@ Ext.onReady(function () {
 
 
         // ***** uses this property if you are using Ext.app.ViewModel directly
-        viewModel: { type: 'customerviewmodel' },
+        // Defined view-port assign viewModel property automatically to the grid.
+        //viewModel: { type: 'customerviewmodel' },
         bind: {
             store: '{CustomerListStore}'
         },
@@ -125,7 +126,12 @@ Ext.onReady(function () {
             dataIndex: 'ProvinceName',
             editor: {
                 xtype: 'combobox',
-                store: province, // It is a function
+                //store: province, // It is a function
+
+                bind: {
+                    store: '{province}'                    
+                },
+
                 displayField: 'ProvinceName',
                 valueField: 'ProvinceName',
                 typeAhead: true,
@@ -148,7 +154,9 @@ Ext.onReady(function () {
             editor: {
                 xtype: 'combobox',
                 //store: city, // It is a function***
+
                 store: cityStore,
+
                 displayField: 'CityName',
                 valueField: 'CityName',
                 typeAhead: true,
@@ -214,6 +222,9 @@ Ext.onReady(function () {
 
     Ext.create('Ext.container.Viewport',
         {
+            // all of view-model properties of components in this view-port, bind this value.
+            viewModel: { type: 'customerviewmodel' },
+
             //el: 'Form1',
             //autoScroll: true,
             scrollable: true,

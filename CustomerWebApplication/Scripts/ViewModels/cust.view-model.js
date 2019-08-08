@@ -97,28 +97,44 @@ Ext.define('CustomerViewModel', {
 
                 }
             }
-        }
+        },
 
+        // more than one store can be here
+
+        province: {
+            model: 'ProvinceModel',
+            //data:
+            autoLoad: false,
+            proxy: {
+                type: 'ajax',
+                url: '/CustomerExtJS/Province',
+                reader: {
+                    type: 'json',
+                    rootProperty: 'data'
+                }
+            }
+        },
+        
     }
 });
 
-var province = Ext.create('Ext.data.Store', {
-    //url: '/CustomerExtJS/City',
-    //root: 'data',
-    //fields: ['CityID', 'CityName'],
-    model: 'ProvinceModel',
-    //data:
-    autoLoad: false,
-    proxy: {
-        type: 'ajax',
-        url: '/CustomerExtJS/Province',
-        reader: {
-            type: 'json',
-            rootProperty: 'data'
-        }
-    },
+//var province = Ext.create('Ext.data.Store', {
+//    //url: '/CustomerExtJS/City',
+//    //root: 'data',
+//    //fields: ['CityID', 'CityName'],
+//    model: 'ProvinceModel',
+//    //data:
+//    autoLoad: false,
+//    proxy: {
+//        type: 'ajax',
+//        url: '/CustomerExtJS/Province',
+//        reader: {
+//            type: 'json',
+//            rootProperty: 'data'
+//        }
+//    },
 
-});
+//});
 
 
 //http://abdelraoof.com/blog/2011/01/28/cascading-combo-box-in-ext-js/

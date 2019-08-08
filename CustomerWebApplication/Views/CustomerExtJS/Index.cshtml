@@ -18,34 +18,36 @@
         <link rel="stylesheet" type="text/css" href="~/shared/examples.css" />
 
         @*Uses static and rtl theme.*@
-        <link rel="stylesheet" type="text/css" href="~/build/classic/theme-neptune/resources/theme-neptune-all-rtl.css">
+        @*<link rel="stylesheet" type="text/css" href="~/build/classic/theme-neptune/resources/theme-neptune-all-rtl.css">*@
+
+        <link href="~/build/classic/theme-classic/resources/theme-classic-all-rtl.css" rel="stylesheet" />        
         <script type="text/javascript" src="~/build/ext-all-rtl.js"></script>
 
 
         <script>
 
-                                //Ext.application({
-                                //    name: 'MyApp',
-                                //    launch: function () {
+                                        //Ext.application({
+                                        //    name: 'MyApp',
+                                        //    launch: function () {
 
-                                //        Ext.create('Ext.container.Viewport',
-                                //            {
-                                //                //autoScroll: true,
-                                //                scrollable: true,
-                                //                //layout: 'border',
-                                //                //xtype: 'panel', // This your UserGrid
-                                //                renderTo: Ext.getBody(),
-                                //                //margin: '100 100 100 100',
-                                //                layout: 'fit',
-                                //                region: 'center',
-                                //                //html: "<div id='crud-grid'></div>",
-                                //                rtl: true,
-                                //                title: 'East Panel',
-                                //                //html: "hello I am a bunch of text"
-                                //            }
-                                //        )
-                                //    }
-                                //});
+                                        //        Ext.create('Ext.container.Viewport',
+                                        //            {
+                                        //                //autoScroll: true,
+                                        //                scrollable: true,
+                                        //                //layout: 'border',
+                                        //                //xtype: 'panel', // This your UserGrid
+                                        //                renderTo: Ext.getBody(),
+                                        //                //margin: '100 100 100 100',
+                                        //                layout: 'fit',
+                                        //                region: 'center',
+                                        //                //html: "<div id='crud-grid'></div>",
+                                        //                rtl: true,
+                                        //                title: 'East Panel',
+                                        //                //html: "hello I am a bunch of text"
+                                        //            }
+                                        //        )
+                                        //    }
+                                        //});
 
 
 
@@ -89,7 +91,7 @@
 
         @*if you prefer to use Ext.app.ViewModel directly to manipulate data you can use it as view model.*@
         @Scripts.Render("~/Scripts/ViewModels/cust.view-model.js")
-        
+
         @Scripts.Render("~/Scripts/Views/customer.view.js")
     </head>
 

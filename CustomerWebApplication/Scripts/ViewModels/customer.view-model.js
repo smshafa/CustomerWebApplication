@@ -1,4 +1,6 @@
 ﻿
+// This view model uses Ext.data.Store and bind it directly to the gird
+
 var store = Ext.create('Ext.data.Store', {
     autoLoad: true,
     autoSync: true,

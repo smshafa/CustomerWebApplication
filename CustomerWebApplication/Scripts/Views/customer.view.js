@@ -1,4 +1,4 @@
-﻿Ext.require(['Ext.data.*', 'Ext.grid.*']);
+﻿Ext.require(['Ext.data.*', 'Ext.grid.*', 'Ext.app.*']);
 
 
 
@@ -55,7 +55,19 @@ Ext.onReady(function () {
         //style: 'margin-top: 10px',
         frame: true,
         title: 'مشتریان',
-        store: store,
+
+        // ***** uses this property if you are using Ext.data.Store directly
+        //store: store,   
+        // *****
+
+
+        // ***** uses this property if you are using Ext.app.ViewModel directly
+        viewModel: { type: 'customerviewmodel' },
+        bind: {
+            store: '{CustomerListStore}'
+        },
+        // ***** 
+
         iconCls: 'icon-user',
         columns: [{
             text: 'ID',
@@ -64,7 +76,12 @@ Ext.onReady(function () {
             dataIndex: 'CustomerID',
             renderer: function (v, meta, rec) {
                 return rec.phantom ? '' : v;
-            }
+            },
+
+            //bind: {
+            //    value: '{CustomerID}',
+            //    dataIndex: '{CustomerID}'
+            //}
         }, {
             header: 'نام',
             width: 220,

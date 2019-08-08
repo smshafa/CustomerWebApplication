@@ -14918,6 +14918,7 @@
     <Content Include="Views\Hamid\Index.cshtml" />
     <Content Include="Views\UpdateCustomer\CusForm.cshtml" />
     <Content Include="Views\CustomerExtJS\Index.cshtml" />
+    <Content Include="Scripts\ViewModels\cust.view-model.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
